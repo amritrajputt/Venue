@@ -36,7 +36,7 @@ export default function RootLayout({
       className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", publicSans.variable)}
     >
       
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col select-none">
           <ThemeProvider
             attribute="class"
             defaultTheme="system"

@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Venue - Event Organisation Platform
 
-## Getting Started
+Venue is a modern full-stack web application designed for event organization, RSVP management, and communication automation. It features a sleek glassmorphic design, custom interactive animations, automatic dark/light mode scheduling, and a relational PostgreSQL database schema.
 
-First, run the development server:
+---
 
+## 🚀 Key Features
+
+*   **Responsive Landing Page:** Fully interactive layout featuring responsive grids, customized Lucide icons, and backdrop-blur navigation overlays.
+*   **Wavy Canvas Text Animation:** Dynamic canvas rendering of the hero target headers using canvas-masked wave animations with custom colors.
+*   **Global Text Selection Guard:** Integrated `select-none` utility rules for container interactions to prevent accidental highlights and drag-drops, keeping the visual experience premium.
+*   **Custom Favicon & Logos:** High-resolution favicon metadata mapping (`4085.jpg`) and custom circular cropping on navigation headers.
+*   **Cascading Relational Schema:** Configured with PostgreSQL constraints via Drizzle ORM to ensure deletion of users automatically cascades to erase related events and event registrations (attendees).
+
+---
+
+## 🛠️ Tech Stack
+
+*   **Core:** [Next.js](https://nextjs.org/) (App Router, Turbopack)
+*   **Language:** [TypeScript](https://www.typescriptlang.org/)
+*   **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
+*   **Database ORM:** [Drizzle ORM](https://orm.drizzle.team/) & [Drizzle Kit](https://orm.drizzle.team/kit-docs/overview)
+*   **Database Driver:** PostgreSQL with `pg` (node-postgres)
+*   **Authentication:** [Better Auth](https://www.better-auth.com/)
+*   **Icons:** [Lucide React](https://lucide.dev/)
+
+---
+
+## 📊 Database Schema (`src/db/schema.ts`)
+
+The database consists of three highly coupled tables utilizing foreign key cascade rules:
+
+1.  **`users` Table:**
+    *   `id`: Primary key (identity column)
+    *   `name`: User name (`varchar`)
+    *   `email`: Unique email address (`varchar`)
+    *   `plan`: Subscription type (`Free` or `paid` PostgreSQL Enum)
+    *   `eventsCreated`: Number of events created (`integer`)
+    *   `eventsAttended`: Number of events registered/attended (`integer`)
+
+2.  **`events` Table:**
+    *   `id`: Primary key (identity column)
+    *   `title`, `description`, `location`, `posterUrl`: Metadata strings
+    *   `date`, `startTime`, `duration`: Timing metrics (`integer` timestamps)
+    *   `userId`: References `usersTable.id` with `onDelete: "cascade"`
+
+3.  **`attendee` Table:**
+    *   `id`: Primary key (identity column)
+    *   `name`, `email`, `age`: Guest metadata
+    *   `eventId`: References `event.id` with `onDelete: "cascade"`
+    *   `userId`: References `usersTable.id` with `onDelete: "cascade"`
+
+---
+
+## ⚙️ Development Commands
+
+Ensure you have your environment variables set up in a local `.env` file containing your `DATABASE_URL` link.
+
+### 1. Run Development Server
 ```bash
-npm run dev
-# or
-yarn dev
-# or
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Generate Drizzle Database Migrations
+Detects changes inside `schema.ts` and creates a local SQL migration script in `./drizzle`:
+```bash
+pnpm generate
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Apply Migrations to PostgreSQL
+Executes pending database updates securely:
+```bash
+pnpm migrate
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 4. Direct Drizzle Schema Push
+Syncs the PostgreSQL schema directly without generating incremental SQL migration scripts:
+```bash
+pnpm push
+```
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 5. Production Build
+```bash
+pnpm build
+```
