@@ -1,0 +1,3 @@
+ALTER TABLE "attendee" DROP CONSTRAINT "attendee_eventId_events_id_fkey", ADD CONSTRAINT "attendee_eventId_events_id_fkey" FOREIGN KEY ("eventId") REFERENCES "events"("id") ON DELETE CASCADE;--> statement-breakpoint
+ALTER TABLE "attendee" DROP CONSTRAINT "attendee_userId_users_id_fkey", ADD CONSTRAINT "attendee_userId_users_id_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE;--> statement-breakpoint
+ALTER TABLE "events" DROP CONSTRAINT "events_userId_users_id_fkey", ADD CONSTRAINT "events_userId_users_id_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE;

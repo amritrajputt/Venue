@@ -1,0 +1,100 @@
+VENUE - Event Organizer Website
+Requirements Document
+=========================================
+
+SCOPE: Auth, Event CRUD, Browse, Contact Organizer, Email (Inngest)
+       + RSVP System + Search/Filter + Organizer Dashboard & Analytics
+
+-----------------------------------------
+1. AUTHENTICATION (Existing)
+-----------------------------------------
+- User signup/login (email + password, or OAuth)
+- Roles: Attendee, Organizer
+- Session/JWT based auth
+
+-----------------------------------------
+2. EVENT MANAGEMENT (Existing)
+-----------------------------------------
+- Create event (title, description, date, time, location, banner image, category)
+- Update event
+- Delete event
+- Browse all events
+- Event detail page
+
+-----------------------------------------
+3. CONTACT ORGANIZER (Existing)
+-----------------------------------------
+- Contact form on event detail page
+- Message sent to organizer's email via Inngest
+- Pre-built email templates
+
+-----------------------------------------
+4. RSVP SYSTEM (New)
+-----------------------------------------
+4.1 Functional
+- Attendee can RSVP: Going / Interested / Not Going
+- One RSVP per user per event (toggle/update allowed)
+- Live headcount visible on event page (Going count, Interested count)
+- Optional: capacity limit per event, waitlist if full
+- RSVP confirmation email sent via Inngest
+- Reminder email sent 24hrs before event (Inngest scheduled function)
+- Organizer can view list of attendees who RSVP'd
+
+4.2 Data Model
+- rsvp: id, eventId, userId, status (going/interested/not_going), createdAt, updatedAt
+- Unique constraint on (eventId, userId)
+
+4.3 Non-functional
+- RSVP count updates in near real-time (revalidate/polling or optimistic UI)
+- Handle race conditions on capacity limit
+
+-----------------------------------------
+5. SEARCH & FILTER (New)
+-----------------------------------------
+5.1 Functional
+- Search events by title/keyword
+- Filter by category/tag (music, tech, sports, etc.)
+- Filter by date range
+- Filter by location/city
+- Filter by price (free/paid) - optional if payments not in scope
+- Sort by: upcoming, most popular (RSVP count), newest
+
+5.2 Non-functional
+- Debounced search input
+- Server-side filtering (query params) for shareable filtered URLs
+- Pagination or infinite scroll on browse page
+
+-----------------------------------------
+6. ORGANIZER DASHBOARD & ANALYTICS (New)
+-----------------------------------------
+6.1 Functional
+- List of events created by logged-in organizer
+- Per-event stats: total views, RSVP breakdown (going/interested/not going)
+- Event status: Draft / Published / Past / Cancelled
+- Edit/Delete shortcuts from dashboard
+- Attendee list export (CSV) - optional
+- Simple RSVP trend chart (RSVP count over time)
+
+6.2 Data Model
+- eventViews: id, eventId, viewedAt (or aggregate counter on event)
+- event.status: enum (draft, published, cancelled, completed)
+
+6.3 Non-functional
+- Dashboard accessible only to event's organizer (authorization check)
+- Analytics queries optimized (aggregate counts, not N+1)
+
+-----------------------------------------
+7. TECH STACK (assumed, adjust as needed)
+-----------------------------------------
+- Frontend: Next.js, TypeScript, Tailwind CSS
+- Backend: Next.js API routes / Express
+- Database: PostgreSQL (or existing DB)
+- Background jobs/emails: Inngest
+- Auth: existing auth solution (e.g. AuthCraft/OIDC or NextAuth)
+
+-----------------------------------------
+8. OUT OF SCOPE (v1)
+-----------------------------------------
+- Paid ticketing/payment gateway
+- Co-organizer/team roles
+- Native calendar sync (Google Calendar API) - can be v1.1
