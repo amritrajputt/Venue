@@ -9,8 +9,16 @@ import {
   Bell, 
   BarChart3
 } from "lucide-react";
- 
+import { useRouter } from "next/navigation";
+
 export default function Home() {
+  const router = useRouter();
+  const handleGetstarted = (path: string) => {
+    router.push(path);
+  }
+  const handleCreateEvent = (path:string) => {
+    router.push(path)
+  }
   return (
     <div className="flex flex-col min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 transition-colors duration-300">
       
@@ -48,14 +56,11 @@ export default function Home() {
           <div className="flex items-center gap-4">
             <ModeToggle />
             <Link
-              href="/login"
-              className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors"
+              href="/sign-in"
+              className="text-sm font-medium text-zinc-600 hover:text-pink-500 dark:text-zinc-400 dark:hover:text-pink-500 transition-colors  px-4 py-2 rounded-full"
             >
               Sign In
             </Link>
-            <button className="rounded-full bg-zinc-900 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-zinc-800 hover:shadow-md dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200">
-              Get Started
-            </button>
           </div>
         </div>
       </header>
@@ -100,10 +105,10 @@ export default function Home() {
             </p>
      
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4">
-              <button className="rounded-full bg-gradient-to-r from-pink-600 to-violet-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:from-pink-500 hover:to-violet-500 hover:shadow-lg transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-600">
+              <button onClick={() => handleCreateEvent('/create-event')} className="rounded-full bg-gradient-to-r from-pink-600 to-violet-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:from-pink-500 hover:to-violet-500 hover:shadow-lg transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-600">
                 Create an Event
               </button>
-              <Link href="/events" className="text-sm font-semibold leading-6 text-zinc-900 dark:text-zinc-300 hover:text-pink-600 dark:hover:text-pink-400 transition-colors">
+              <Link href="/explore-events" className="text-sm font-semibold leading-6 text-zinc-900 dark:text-zinc-300 hover:text-pink-600 dark:hover:text-pink-400 transition-colors">
                 Explore Events <span aria-hidden="true">→</span>
               </Link>
             </div>
