@@ -1,0 +1,1 @@
+ALTER TABLE "events" ADD COLUMN "attendees" integer DEFAULT 0 NOT NULL;

@@ -81,11 +81,13 @@ export const eventsTable = pgTable("events", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   title: varchar({ length: 255 }).notNull(),
   description: varchar({ length: 255 }).notNull(),
+  isPrivate: boolean().default(false).notNull(),
   location: varchar({ length: 255 }).notNull(),
   posterUrl: varchar({ length: 255 }).notNull(),
   date: integer().notNull(),
   startTime: integer().notNull(),
   duration: integer().notNull(),
+  attendees: integer().default(0).notNull(),
   userId: text("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
