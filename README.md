@@ -26,32 +26,6 @@ Venue is a modern full-stack web application designed for event organization, RS
 
 ---
 
-## 📊 Database Schema (`src/db/schema.ts`)
-
-The database consists of three highly coupled tables utilizing foreign key cascade rules:
-
-1.  **`users` Table:**
-    *   `id`: Primary key (identity column)
-    *   `name`: User name (`varchar`)
-    *   `email`: Unique email address (`varchar`)
-    *   `plan`: Subscription type (`Free` or `paid` PostgreSQL Enum)
-    *   `eventsCreated`: Number of events created (`integer`)
-    *   `eventsAttended`: Number of events registered/attended (`integer`)
-
-2.  **`events` Table:**
-    *   `id`: Primary key (identity column)
-    *   `title`, `description`, `location`, `posterUrl`: Metadata strings
-    *   `date`, `startTime`, `duration`: Timing metrics (`integer` timestamps)
-    *   `userId`: References `usersTable.id` with `onDelete: "cascade"`
-
-3.  **`attendee` Table:**
-    *   `id`: Primary key (identity column)
-    *   `name`, `email`, `age`: Guest metadata
-    *   `eventId`: References `event.id` with `onDelete: "cascade"`
-    *   `userId`: References `usersTable.id` with `onDelete: "cascade"`
-
----
-
 ## ⚙️ Development Commands
 
 Ensure you have your environment variables set up in a local `.env` file containing your `DATABASE_URL` link.

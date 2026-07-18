@@ -11,7 +11,7 @@ export const usersTable = pgTable("users", {
   eventsAttended: integer().default(0)
 });
 
-export const event = pgTable("events", {
+export const eventsTable = pgTable("events", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   title: varchar({ length: 255 }).notNull(),
   description: varchar({ length: 255 }).notNull(),
@@ -23,11 +23,11 @@ export const event = pgTable("events", {
   userId: integer().notNull().references(() => usersTable.id, { onDelete: "cascade" })
 })
 
-export const attendee = pgTable("attendee", {
+export const attendeeTable = pgTable("attendee", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: varchar({ length: 255 }).notNull(),
   age: integer().notNull(),
   email: varchar({ length: 255 }).notNull().unique(),
-  eventId: integer().notNull().references(() => event.id, { onDelete: "cascade" }),
+  eventId: integer().notNull().references(() => eventsTable.id, { onDelete: "cascade" }),
   userId: integer().notNull().references(() => usersTable.id, { onDelete: "cascade" })
 })
