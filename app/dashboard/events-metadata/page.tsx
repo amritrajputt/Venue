@@ -9,6 +9,8 @@ import { UserEventsList } from "@/components/user-events-list";
 import { Plus } from "lucide-react";
 import { CreateEventModal } from "@/components/create-event-modal";
 
+import { Button } from "@/components/ui/button";
+
 export default async function OrganiseEventPage() {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -37,11 +39,11 @@ export default async function OrganiseEventPage() {
             Manage and view statistics of all the events you've organized.
           </p>
         </div>
-        <Link href="/dashboard/organise-event">
-          <button className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-pink-600 to-violet-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:from-pink-500 hover:to-violet-500 transition-all duration-200 cursor-pointer">
+        <Link href="/dashboard/events-metadata">
+          <Button size="lg" className="rounded-full gap-2 cursor-pointer">
             <Plus className="size-4" />
             <span>Organise Event</span>
-          </button>
+          </Button>
         </Link>
       </div>
 

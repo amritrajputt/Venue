@@ -7,13 +7,17 @@ import { EventForm } from "@/components/create-event-form";
 export function CreateEventModal() {
   const router = useRouter();
 
+  const closeModal = () => {
+    if (typeof window !== "undefined" && window.history.length > 1) {
+      router.back();
+    } else {
+      router.push("/dashboard/events");
+    }
+  };
+
   const handleOpenChange = (open: boolean) => {
     if (!open) {
-      if (typeof window !== "undefined" && window.history.length > 1) {
-        router.back();
-      } else {
-        router.push("/dashboard/events");
-      }
+      closeModal();
     }
   };
 
@@ -23,7 +27,7 @@ export function CreateEventModal() {
         <DialogHeader>
           <DialogTitle>Create New Event</DialogTitle>
         </DialogHeader>
-        <EventForm />
+        <EventForm onSuccess={closeModal} />
       </DialogContent>
     </Dialog>
   );

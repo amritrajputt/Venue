@@ -18,8 +18,9 @@ export function useImageKitUpload() {
     const abortController = useRef(new AbortController());
 
     const authenticator = async () => {
-        const { data } = await axios.get("/api/upload-auth");
-        const { signature, expire, token, publicKey } = data;
+        const { data: res } = await axios.get("/api/upload-auth");
+        const authData = res.data || res;
+        const { signature, expire, token, publicKey } = authData;
         return { signature, expire, token, publicKey };
     };
 

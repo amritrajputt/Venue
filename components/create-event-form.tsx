@@ -1,11 +1,13 @@
 "use client"
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useImageKitUpload } from "@/hooks/use-imagekit-upload";
 import { FileUpload } from "@/components/ui/file-upload";
 import { Input } from "@base-ui/react";
 import { toast } from "sonner";
 import axios from "axios";
+import { Button } from "@/components/ui/button";
 
 interface FormInput {
     title: string;
@@ -34,6 +36,7 @@ export interface CreateEventFormProps {
 }
 
 export function EventForm({ initialData, onSuccess }: CreateEventFormProps = {}) {
+    const router = useRouter();
     const [values, setValue] = useState<FormInput>({
         title: initialData?.title || "",
         date: initialData?.date || "",
@@ -127,6 +130,8 @@ export function EventForm({ initialData, onSuccess }: CreateEventFormProps = {})
                     });
                 }
                 onSuccess?.();
+                router.push("/dashboard/events");
+                router.refresh();
             } else {
                 toast.error(isEditMode ? "Failed to update event" : "Failed to create event")
             }
@@ -141,7 +146,6 @@ export function EventForm({ initialData, onSuccess }: CreateEventFormProps = {})
 
     const handleDelete = async () => {
         if (!initialData?.id) return;
-        if (!confirm("Are you sure you want to delete this event?")) return;
 
         setIsDeleting(true);
         try {
@@ -233,6 +237,25 @@ export function EventForm({ initialData, onSuccess }: CreateEventFormProps = {})
                     />
                 </div>
             </div>
+
+            <div className="flex items-center justify-between p-3.5 rounded-xl border border-zinc-200/80 bg-white dark:border-zinc-800/80 dark:bg-zinc-950 transition-all duration-200">
+                <div className="flex flex-col gap-0.5">
+                    <label htmlFor="isPrivate" className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 cursor-pointer">
+                        Private Event
+                    </label>
+                    <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                        {values.isPrivate ? "Private event (hidden from explore events)" : "Public event (visible on explore events)"}
+                    </span>
+                </div>
+                <input
+                    type="checkbox"
+                    id="isPrivate"
+                    checked={values.isPrivate}
+                    onChange={(e) => setValue({ ...values, isPrivate: e.target.checked })}
+                    className="size-5 rounded border-zinc-300 text-pink-600 focus:ring-pink-500 cursor-pointer accent-pink-600"
+                />
+            </div>
+
             <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">Event Poster</label>
                 <div className="w-full border border-dashed border-neutral-200 dark:border-neutral-800 rounded-2xl bg-white dark:bg-neutral-950/20 overflow-hidden">
@@ -256,43 +279,48 @@ export function EventForm({ initialData, onSuccess }: CreateEventFormProps = {})
                             <span className="flex items-center justify-center size-5 rounded-full bg-emerald-50 dark:bg-emerald-950/30 text-xs font-bold">✓</span>
                             <span>Poster uploaded successfully</span>
                         </div>
+                        
                     )}
+                  
                 </div>
             </div>
-
             <div className="flex gap-3 mt-2">
                 {isEditMode && (
-                    <button
+                    <Button
                         type="button"
+                        variant="destructive"
+                        size="lg"
                         onClick={handleDelete}
                         disabled={isSubmitting || isUploading || isDeleting}
-                        className="flex-1 rounded-full border border-rose-200 bg-rose-50 px-5 py-3 text-sm font-semibold text-rose-600 shadow-sm hover:bg-rose-100 dark:border-rose-900/50 dark:bg-rose-950/30 dark:text-rose-400 dark:hover:bg-rose-950/50 disabled:opacity-50 transition-all duration-200 cursor-pointer flex items-center justify-center gap-2"
+                        className="flex-1 rounded-full cursor-pointer"
                     >
                         {isDeleting ? (
                             <>
-                                <span className="size-4 animate-spin rounded-full border-2 border-rose-600 border-t-transparent dark:border-rose-400" />
+                                <span className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
                                 <span>Deleting...</span>
                             </>
                         ) : (
                             <span>Delete Event</span>
                         )}
-                    </button>
+                    </Button>
                 )}
-                <button
+                <Button
                     type="button"
+                    variant="default"
+                    size="lg"
                     onClick={handleSubmit}
                     disabled={isSubmitting || isUploading || isDeleting}
-                    className={`${isEditMode ? "flex-1" : "w-full"} rounded-full bg-gradient-to-r from-pink-600 to-violet-600 px-5 py-3 text-sm font-semibold text-white shadow-md hover:from-pink-500 hover:to-violet-500 disabled:opacity-50 transition-all duration-200 cursor-pointer flex items-center justify-center gap-2`}
+                    className={`${isEditMode ? "flex-1" : "w-full"} rounded-full cursor-pointer`}
                 >
                     {isSubmitting ? (
                         <>
-                            <span className="size-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                            <span className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
                             <span>{isEditMode ? "Updating Event..." : "Creating Event..."}</span>
                         </>
                     ) : (
                         <span>{isEditMode ? "Update Event" : "Create Event"}</span>
                     )}
-                </button>
+                </Button>
             </div>
         </div>
     )

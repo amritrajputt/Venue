@@ -59,7 +59,7 @@ export function DashboardSidebar({ user, plan = "Free" }: DashboardSidebarProps)
       title: "Create Events",
       value: "create-events",
       icon: LayoutDashboard,
-      href: "/dashboardevents",
+      href: "/dashboard/events",
     },
     {
       title: "Statistics",
@@ -90,10 +90,10 @@ export function DashboardSidebar({ user, plan = "Free" }: DashboardSidebarProps)
                 />
               </span>
               <span className="grid flex-1 text-left leading-tight group-data-[collapsible=icon]:hidden">
-                <span className="truncate font-bold bg-gradient-to-r from-pink-600 to-pink-600 bg-clip-text text-transparent dark:from-pink-400 dark:to-pink-400 text-lg">
+                <span className="truncate font-bold text-foreground text-lg">
                   Venue
                 </span>
-                <span className="truncate text-xxs font-medium text-zinc-500">
+                <span className="truncate text-xxs font-medium text-muted-foreground">
                   {plan} Organizer
                 </span>
               </span>
@@ -122,11 +122,11 @@ export function DashboardSidebar({ user, plan = "Free" }: DashboardSidebarProps)
                       render={<Link href={item.href} />}
                       className={`relative flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 cursor-pointer ${
                         isActive
-                          ? "bg-gradient-to-r from-pink-500/10 to-violet-500/10 text-pink-600 dark:text-pink-400 font-semibold border-l-2 border-pink-500"
-                          : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100/80 dark:hover:bg-zinc-800/40"
+                          ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold"
+                          : "text-muted-foreground hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground"
                       }`}
                     >
-                      <Icon className={`size-4.5 ${isActive ? "text-pink-600 dark:text-pink-400" : ""}`} />
+                      <Icon className="size-4.5" />
                       <span className="group-data-[collapsible=icon]:hidden">
                         {item.title}
                       </span>

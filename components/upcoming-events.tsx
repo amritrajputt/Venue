@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
@@ -78,7 +79,7 @@ export function UpcomingEvents({
         <Button
           onClick={onEdit}
           variant="outline"
-          className="flex-1 group-hover:bg-gradient-to-r group-hover:from-pink-600 group-hover:to-violet-600 group-hover:text-white group-hover:border-transparent transition-all duration-300 cursor-pointer"
+          className="flex-1 cursor-pointer"
         >
           <span>View Details / Edit</span>
           <ArrowRight className="size-4 ml-1.5 transition-transform group-hover:translate-x-1" />

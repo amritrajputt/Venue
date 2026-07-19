@@ -10,6 +10,7 @@ import {
   BarChart3
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
 
 export default function Home() {
   const router = useRouter();
@@ -105,10 +106,10 @@ export default function Home() {
             </p>
      
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4">
-              <button onClick={() => handleCreateEvent('/create-event')} className="rounded-full bg-gradient-to-r from-pink-600 to-violet-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:from-pink-500 hover:to-violet-500 hover:shadow-lg transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-600">
+              <button onClick={() => handleCreateEvent('/dashboard/event')} className="rounded-full bg-gradient-to-r from-pink-600 to-violet-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:from-pink-500 hover:to-violet-500 hover:shadow-lg transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-600">
                 Create an Event
               </button>
-              <Link href="/explore-events" className="text-sm font-semibold leading-6 text-zinc-900 dark:text-zinc-300 hover:text-pink-600 dark:hover:text-pink-400 transition-colors">
+              <Link href="/upcoming-events" className="text-sm font-semibold leading-6 text-zinc-900 dark:text-zinc-300 hover:text-pink-600 dark:hover:text-pink-400 transition-colors">
                 Explore Events <span aria-hidden="true">→</span>
               </Link>
             </div>

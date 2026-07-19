@@ -67,9 +67,8 @@ export function UserEventsList({ userEvents, userName, currentUserId }: UserEven
   };
 
   const handleDeleteCard = async (eventId: number) => {
-    if (!confirm("Are you sure you want to delete this event?")) return;
     try {
-      const response = await axios.delete("/api/create-events", {
+      const response = await axios.delete("/api/events", {
         data: { id: eventId },
       });
       if (response.status === 200) {
