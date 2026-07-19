@@ -7,8 +7,9 @@ import { eq, sql } from "drizzle-orm";
 import Link from "next/link";
 import { UpcomingEvents } from "@/components/upcoming-events";
 import { Plus, FolderKanban } from "lucide-react";
+import { CreateEventModal } from "@/components/create-event-modal";
 
-export default async function MyEventsPage() {
+export default async function OrganiseEventPage() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -89,6 +90,9 @@ export default async function MyEventsPage() {
           ))}
         </div>
       )}
+
+      {/* Render the modal overlay on top of the list */}
+      <CreateEventModal />
     </div>
   );
 }

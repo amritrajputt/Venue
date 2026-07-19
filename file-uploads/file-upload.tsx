@@ -8,75 +8,30 @@ import {
     upload,
 } from "@imagekit/next";
 import { useRef, useState } from "react";
+import axios from "axios";
 
-const UploadPoster = () => {
+export function useImageKitUpload() {
     const [progress, setProgress] = useState(0);
     const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
     const [isUploading, setIsUploading] = useState(false);
-
-    // Create a ref for the file input element to access its files easily
-    const fileInputRef = useRef<HTMLInputElement>(null);
-
-    // Create an AbortController instance to provide an option to cancel the upload if needed.
+    const [error, setError] = useState<string | null>(null);
     const abortController = useRef(new AbortController());
 
-    /**
-     * Authenticates and retrieves the necessary upload credentials from the server.
-     *
-     * This function calls the authentication API endpoint to receive upload parameters like signature,
-     * expire time, token, and publicKey.
-     *
-     * @returns {Promise<{signature: string, expire: string, token: string, publicKey: string}>} The authentication parameters.
-     * @throws {Error} Throws an error if the authentication request fails.
-     */
     const authenticator = async () => {
-        try {
-            const response = await fetch("/api/upload-auth");
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`Request failed with status ${response.status}: ${errorText}`);
-            }
-            const data = await response.json();
-            const { signature, expire, token, publicKey } = data;
-            return { signature, expire, token, publicKey };
-        } catch (error) {
-            console.error("Authentication error:", error);
-            throw new Error("Authentication request failed");
-        }
+        const { data } = await axios.get("/api/upload-auth");
+        const { signature, expire, token, publicKey } = data;
+        return { signature, expire, token, publicKey };
     };
 
-    /**
-     * Handles the file upload process.
-     *
-     * This function:
-     * - Validates file selection.
-     * - Retrieves upload authentication credentials.
-     * - Initiates the file upload via the ImageKit SDK.
-     * - Updates the upload progress.
-     * - Catches and processes errors accordingly.
-     */
-    const handleUpload = async () => {
-        const fileInput = fileInputRef.current;
-        const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
-        const [isUploading, setIsUploading] = useState(false);
-        if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
-            alert("Please select a file to upload");
-            return;
-        }
-
-        const file = fileInput.files[0];
-
-        let authParams;
-        try {
-            authParams = await authenticator();
-        } catch (authError) {
-            console.error("Failed to authenticate for upload:", authError);
-            return;
-        }
-        const { signature, expire, token, publicKey } = authParams;
+    const uploadFile = async (file: File): Promise<string | null> => {
+        setIsUploading(true);
+        setProgress(0);
+        setError(null);
 
         try {
-            setIsUploading(true);
+            const authParams = await authenticator();
+            const { signature, expire, token, publicKey } = authParams;
+
             const uploadResponse = await upload({
                 expire,
                 token,
@@ -89,35 +44,33 @@ const UploadPoster = () => {
                 },
                 abortSignal: abortController.current.signal,
             });
-            setIsUploading(false);
-            console.log("Upload response:", uploadResponse);
-            setUploadedUrl(uploadResponse.url ?? null);
-        } catch (error) {
-                setIsUploading(false);
-            if (error instanceof ImageKitAbortError) {
-                console.error("Upload aborted:", error.reason);
-            } else if (error instanceof ImageKitInvalidRequestError) {
-                console.error("Invalid request:", error.message);
-            } else if (error instanceof ImageKitUploadNetworkError) {
-                console.error("Network error:", error.message);
-            } else if (error instanceof ImageKitServerError) {
-                console.error("Server error:", error.message);
+
+            const url = uploadResponse?.url ?? null;
+            setUploadedUrl(url);
+            return url;
+        } catch (err) {
+            if (err instanceof ImageKitAbortError) {
+                setError("Upload aborted");
+            } else if (err instanceof ImageKitInvalidRequestError) {
+                setError("Invalid request");
+            } else if (err instanceof ImageKitUploadNetworkError) {
+                setError("Network error");
+            } else if (err instanceof ImageKitServerError) {
+                setError("Server error");
             } else {
-                console.error("Upload error:", error);
+                setError("Upload failed");
             }
+            console.error("Upload error:", err);
+            return null;
+        } finally {
+            setIsUploading(false);
         }
     };
 
-    return (
-        <>
-            <input type="file" ref={fileInputRef} />
-            <button type="button" onClick={handleUpload}>
-                Upload file
-            </button>
-            <br />
-            Upload progress: <progress value={progress} max={100}></progress>
-        </>
-    );
-};
+    const cancelUpload = () => {
+        abortController.current.abort();
+        abortController.current = new AbortController();
+    };
 
-export default UploadPoster;
+    return { uploadFile, cancelUpload, progress, uploadedUrl, isUploading, error };
+}
