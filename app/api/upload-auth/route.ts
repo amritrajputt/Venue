@@ -15,17 +15,10 @@ export async function GET() {
     const privateKey = process.env.NEXT_IMAGEKIT_PRIVATE_KEY as string;
     const publicKey = process.env.NEXT_IMAGEKIT_PUBLIC_KEY as string;
 
-    console.log("[upload-auth] privateKey loaded:", privateKey ? `${privateKey.substring(0, 10)}...` : "MISSING");
-    console.log("[upload-auth] publicKey loaded:", publicKey ? `${publicKey.substring(0, 10)}...` : "MISSING");
-
     const { token, expire, signature } = getUploadAuthParams({
         privateKey,
         publicKey,
     })
-
-    console.log("[upload-auth] token:", token);
-    console.log("[upload-auth] expire:", expire);
-    console.log("[upload-auth] signature:", signature);
 
     return Response.json({ token, expire, signature, publicKey })
 }

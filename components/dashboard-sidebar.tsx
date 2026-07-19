@@ -59,13 +59,7 @@ export function DashboardSidebar({ user, plan = "Free" }: DashboardSidebarProps)
       title: "Create Events",
       value: "create-events",
       icon: LayoutDashboard,
-      href: "/dashboard/create-events",
-    },
-    {
-      title: "Upcoming Events",
-      value: "upcoming",
-      icon: Calendar,
-      href: "/dashboard/upcoming",
+      href: "/dashboardevents",
     },
     {
       title: "Statistics",
@@ -83,7 +77,7 @@ export function DashboardSidebar({ user, plan = "Free" }: DashboardSidebarProps)
 
   return (
     <Sidebar collapsible="icon" className="border-r border-zinc-200/80 dark:border-zinc-800/80">
-      {/* Brand Header */}
+     
       <SidebarHeader className="border-b border-zinc-200/40 dark:border-zinc-800/40 py-4">
         <SidebarMenu>
           <SidebarMenuItem>
@@ -108,7 +102,6 @@ export function DashboardSidebar({ user, plan = "Free" }: DashboardSidebarProps)
         </SidebarMenu>
       </SidebarHeader>
 
-      {/* Main Navigation Section */}
       <SidebarContent className="py-4">
         <SidebarGroup>
           <SidebarGroupLabel className="text-zinc-400/80 uppercase tracking-wider text-[10px] font-bold mb-2 px-3">
@@ -146,10 +139,8 @@ export function DashboardSidebar({ user, plan = "Free" }: DashboardSidebarProps)
         </SidebarGroup>
       </SidebarContent>
 
-      {/* Sidebar Footer with Profile & Logout */}
       <SidebarFooter className="border-t border-zinc-200/40 dark:border-zinc-800/40 p-4">
         <SidebarMenu>
-          {/* User Profile Summary */}
           <SidebarMenuItem className="group-data-[collapsible=icon]:hidden mb-4">
             <div className="flex items-center gap-3 px-2">
               <div className="size-9 rounded-full overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 shrink-0">
@@ -172,7 +163,6 @@ export function DashboardSidebar({ user, plan = "Free" }: DashboardSidebarProps)
             </div>
           </SidebarMenuItem>
 
-          {/* Logout Button */}
           <SidebarMenuItem>
             <SidebarMenuButton
               onClick={handleLogout}

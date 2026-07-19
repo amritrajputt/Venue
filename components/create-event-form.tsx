@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react";
-import { useImageKitUpload } from "@/file-uploads/file-upload";
+import { useImageKitUpload } from "@/hooks/use-imagekit-upload";
 import { FileUpload } from "@/components/ui/file-upload";
 import { Input } from "@base-ui/react";
 import { toast } from "sonner";
@@ -18,20 +18,38 @@ interface FormInput {
     poster: string;
 }
 
-export function CreateEventForm() {
+export interface CreateEventFormProps {
+    initialData?: {
+        id?: number | string;
+        title: string;
+        date: string;
+        startTime: string;
+        duration: string;
+        location: string;
+        description: string;
+        poster: string;
+        isPrivate?: boolean;
+    };
+    onSuccess?: () => void;
+}
+
+export function EventForm({ initialData, onSuccess }: CreateEventFormProps = {}) {
     const [values, setValue] = useState<FormInput>({
-        title: "",
-        date: "",
-        startTime: "",
-        duration: "",
-        isPrivate: false,
-        location: "",
-        description: "",
-        poster: "",
+        title: initialData?.title || "",
+        date: initialData?.date || "",
+        startTime: initialData?.startTime || "",
+        duration: initialData?.duration || "",
+        isPrivate: initialData?.isPrivate || false,
+        location: initialData?.location || "",
+        description: initialData?.description || "",
+        poster: initialData?.poster || "",
     })
     const [errors, setErrors] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const [isDeleting, setIsDeleting] = useState(false);
     const { uploadFile, progress, isUploading, uploadedUrl } = useImageKitUpload();
+
+    const isEditMode = Boolean(initialData?.id);
 
     const handleFileChange = async (files: File[]) => {
         if (files.length === 0) return;
@@ -54,8 +72,8 @@ export function CreateEventForm() {
             return;
         }
 
-        const dateParts = values.date.split("-"); // YYYY-MM-DD
-        const timeParts = values.startTime.split(":"); // HH:MM
+        const dateParts = values.date.split("-");
+        const timeParts = values.startTime.split(":");
 
         const dateObj = new Date(Number(dateParts[0]), Number(dateParts[1]) - 1, Number(dateParts[2]));
         const epochDate = Math.floor(dateObj.getTime() / 1000);
@@ -78,7 +96,8 @@ export function CreateEventForm() {
         setIsSubmitting(true)
         setErrors(false)
         try {
-            const response = await axios.post("/api/create-events", {
+            const payload = {
+                id: initialData?.id,
                 title: values.title,
                 description: values.description,
                 date: epochDate,
@@ -87,31 +106,61 @@ export function CreateEventForm() {
                 posterUrl: values.poster,
                 location: values.location,
                 isPrivate: values.isPrivate,
-            })
+            };
+
+            const response = isEditMode
+                ? await axios.patch("/api/events", payload)
+                : await axios.post("/api/events", payload);
+
             if (response.status === 200) {
-                toast.success("Event created successfully")
-                // Reset form values
-                setValue({
-                    title: "",
-                    date: "",
-                    startTime: "",
-                    duration: "",
-                    isPrivate: false,
-                    location: "",
-                    description: "",
-                    poster: "",
-                });
+                toast.success(isEditMode ? "Event updated successfully" : "Event created successfully");
+                if (!isEditMode) {
+                    setValue({
+                        title: "",
+                        date: "",
+                        startTime: "",
+                        duration: "",
+                        isPrivate: false,
+                        location: "",
+                        description: "",
+                        poster: "",
+                    });
+                }
+                onSuccess?.();
             } else {
-                toast.error("Failed to create event")
+                toast.error(isEditMode ? "Failed to update event" : "Failed to create event")
             }
         } catch (error) {
             console.error(error)
             setErrors(true)
-            toast.error("Failed to create event")
+            toast.error(isEditMode ? "Failed to update event" : "Failed to create event")
         } finally {
             setIsSubmitting(false)
         }
     }
+
+    const handleDelete = async () => {
+        if (!initialData?.id) return;
+        if (!confirm("Are you sure you want to delete this event?")) return;
+
+        setIsDeleting(true);
+        try {
+            const response = await axios.delete("/api/events", {
+                data: { id: initialData.id },
+            });
+            if (response.status === 200) {
+                toast.success("Event deleted successfully");
+                onSuccess?.();
+            } else {
+                toast.error("Failed to delete event");
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to delete event");
+        } finally {
+            setIsDeleting(false);
+        }
+    };
 
     return (
         <div className="flex flex-col w-full mx-auto my-auto p-2 gap-5">
@@ -184,8 +233,6 @@ export function CreateEventForm() {
                     />
                 </div>
             </div>
-
-            {/* Aceternity UI + ImageKit hook */}
             <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">Event Poster</label>
                 <div className="w-full border border-dashed border-neutral-200 dark:border-neutral-800 rounded-2xl bg-white dark:bg-neutral-950/20 overflow-hidden">
@@ -197,7 +244,7 @@ export function CreateEventForm() {
                                 <span className="font-semibold">{Math.round(progress)}%</span>
                             </div>
                             <div className="h-1.5 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
-                                <div 
+                                <div
                                     className="h-full bg-gradient-to-r from-pink-500 to-violet-500 rounded-full transition-all duration-300"
                                     style={{ width: `${progress}%` }}
                                 />
@@ -213,21 +260,40 @@ export function CreateEventForm() {
                 </div>
             </div>
 
-            <button
-                type="button"
-                onClick={handleSubmit}
-                disabled={isSubmitting || isUploading}
-                className="mt-2 w-full rounded-full bg-gradient-to-r from-pink-600 to-violet-600 px-5 py-3 text-sm font-semibold text-white shadow-md hover:from-pink-500 hover:to-violet-500 disabled:opacity-50 transition-all duration-200 cursor-pointer flex items-center justify-center gap-2"
-            >
-                {isSubmitting ? (
-                    <>
-                        <span className="size-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                        <span>Creating Event...</span>
-                    </>
-                ) : (
-                    <span>Create Event</span>
+            <div className="flex gap-3 mt-2">
+                {isEditMode && (
+                    <button
+                        type="button"
+                        onClick={handleDelete}
+                        disabled={isSubmitting || isUploading || isDeleting}
+                        className="flex-1 rounded-full border border-rose-200 bg-rose-50 px-5 py-3 text-sm font-semibold text-rose-600 shadow-sm hover:bg-rose-100 dark:border-rose-900/50 dark:bg-rose-950/30 dark:text-rose-400 dark:hover:bg-rose-950/50 disabled:opacity-50 transition-all duration-200 cursor-pointer flex items-center justify-center gap-2"
+                    >
+                        {isDeleting ? (
+                            <>
+                                <span className="size-4 animate-spin rounded-full border-2 border-rose-600 border-t-transparent dark:border-rose-400" />
+                                <span>Deleting...</span>
+                            </>
+                        ) : (
+                            <span>Delete Event</span>
+                        )}
+                    </button>
                 )}
-            </button>
+                <button
+                    type="button"
+                    onClick={handleSubmit}
+                    disabled={isSubmitting || isUploading || isDeleting}
+                    className={`${isEditMode ? "flex-1" : "w-full"} rounded-full bg-gradient-to-r from-pink-600 to-violet-600 px-5 py-3 text-sm font-semibold text-white shadow-md hover:from-pink-500 hover:to-violet-500 disabled:opacity-50 transition-all duration-200 cursor-pointer flex items-center justify-center gap-2`}
+                >
+                    {isSubmitting ? (
+                        <>
+                            <span className="size-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                            <span>{isEditMode ? "Updating Event..." : "Creating Event..."}</span>
+                        </>
+                    ) : (
+                        <span>{isEditMode ? "Update Event" : "Create Event"}</span>
+                    )}
+                </button>
+            </div>
         </div>
     )
 }

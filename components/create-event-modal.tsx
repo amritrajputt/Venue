@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { CreateEventForm } from "@/components/create-event-form";
+import { EventForm } from "@/components/create-event-form";
 
 export function CreateEventModal() {
   const router = useRouter();
@@ -12,7 +12,7 @@ export function CreateEventModal() {
       if (typeof window !== "undefined" && window.history.length > 1) {
         router.back();
       } else {
-        router.push("/dashboard/create-events");
+        router.push("/dashboard/events");
       }
     }
   };
@@ -23,7 +23,7 @@ export function CreateEventModal() {
         <DialogHeader>
           <DialogTitle>Create New Event</DialogTitle>
         </DialogHeader>
-        <CreateEventForm />
+        <EventForm />
       </DialogContent>
     </Dialog>
   );

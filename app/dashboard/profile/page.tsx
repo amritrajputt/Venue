@@ -55,10 +55,6 @@ export default async function ProfilePage() {
             <h4 className="font-bold text-lg">Details</h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="space-y-1">
-                <p className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Account ID</p>
-                <p className="text-sm font-mono text-zinc-600 dark:text-zinc-300 select-all truncate">{session.user.id}</p>
-              </div>
-              <div className="space-y-1">
                 <p className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Email Verified</p>
                 <div className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 text-sm font-semibold">
                   <ShieldCheck className="size-4" />
@@ -69,44 +65,7 @@ export default async function ProfilePage() {
           </div>
         </div>
 
-        <div className="rounded-3xl border border-zinc-200/80 bg-white/45 p-6 dark:border-zinc-800/80 dark:bg-zinc-900/25 backdrop-blur-sm flex flex-col justify-between h-fit gap-6 shadow-sm">
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="p-2.5 rounded-xl bg-pink-100 dark:bg-pink-900/20 text-pink-600 dark:text-pink-400">
-                <Award className="size-5" />
-              </div>
-              <h3 className="font-bold text-lg">Current Plan</h3>
-            </div>
-
-            <div className="space-y-2">
-              <div className="text-3xl font-extrabold text-zinc-900 dark:text-zinc-50">
-                {dbUser?.plan || "Free"}
-              </div>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                Host unlimited local meetups with our basic features. Upgrade for advanced analytics and higher attendee quotas.
-              </p>
-            </div>
-
-            <ul className="text-xs text-zinc-600 dark:text-zinc-400 space-y-2 pt-2">
-              <li className="flex items-center gap-2">
-                <ChevronRight className="size-3 text-pink-500" />
-                <span>Up to 5 active events</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <ChevronRight className="size-3 text-pink-500" />
-                <span>Standard RSVP limit (50 attendees)</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <ChevronRight className="size-3 text-pink-500" />
-                <span>Basic organizer statistics</span>
-              </li>
-            </ul>
-          </div>
-
-          <button className="w-full rounded-full bg-gradient-to-r from-pink-600 to-violet-600 py-3 text-sm font-semibold text-white hover:from-pink-500 hover:to-violet-500 hover:shadow-lg transition-all duration-200 cursor-pointer">
-            Upgrade to Paid Plan
-          </button>
-        </div>
+        
       </div>
     </div>
   );

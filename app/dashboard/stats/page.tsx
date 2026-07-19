@@ -24,13 +24,11 @@ export default async function StatsPage() {
     .leftJoin(attendeeTable, eq(eventsTable.id, attendeeTable.eventId))
     .where(eq(eventsTable.userId, session.user.id))
     .groupBy(eventsTable.id);
-
-  // Statistics calculations
   const totalEvents = userEvents.length;
   const totalRegistrations = userEvents.reduce((acc, curr) => acc + curr.attendeeCount, 0);
   const averageAttendance = totalEvents > 0 ? Math.round(totalRegistrations / totalEvents) : 0;
 
-  // Format date helper
+  
   const formatDate = (epochSec: number) => {
     return new Date(epochSec * 1000).toLocaleDateString("en-US", {
       month: "short",
@@ -49,7 +47,7 @@ export default async function StatsPage() {
       </div>
 
       <div className="space-y-8">
-        {/* Stats cards */}
+        
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           <div className="flex items-center gap-4 rounded-3xl border border-zinc-200/80 bg-white/45 p-6 dark:border-zinc-800/80 dark:bg-zinc-900/20 backdrop-blur-sm shadow-sm">
             <div className="p-3.5 rounded-2xl bg-pink-100 dark:bg-pink-900/20 text-pink-600 dark:text-pink-400">
@@ -82,7 +80,7 @@ export default async function StatsPage() {
           </div>
         </div>
 
-        {/* Detailed Table */}
+        
         <div className="rounded-3xl border border-zinc-200/80 bg-white/30 dark:border-zinc-800/80 dark:bg-zinc-900/10 backdrop-blur-sm overflow-hidden">
           <div className="px-6 py-4 border-b border-zinc-200/60 dark:border-zinc-800/60">
             <h3 className="font-bold text-lg">Event Breakdown</h3>

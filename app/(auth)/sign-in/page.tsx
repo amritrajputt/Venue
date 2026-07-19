@@ -6,6 +6,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {auth} from "@/lib/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import { GoogleSignInButton } from "@/components/google-sign-in-button";
 
 export const metadata: Metadata = {
@@ -18,6 +21,11 @@ type SignInPageProps = {
 };
 
 export default async function SignInPage({ searchParams }: SignInPageProps) {
+  const session = await auth.api.getSession({ headers: await headers() });
+
+  if (session) {
+    redirect("/dashboard/events");
+  }
   const { callbackUrl } = await searchParams;
 
   return (

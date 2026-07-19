@@ -44,7 +44,7 @@ export default async function DashboardLayout({
           <div className="sticky top-0 z-40 flex h-14 items-center gap-4 border-b border-zinc-200/40 bg-white/40 px-6 backdrop-blur-md dark:border-zinc-800/40 dark:bg-zinc-950/40">
             <SidebarTrigger />
             <div className="h-4 w-px bg-zinc-200 dark:bg-zinc-800" />
-            <span className="text-sm font-medium text-zinc-500">Dashboard Workspace</span>
+            <span className="text-sm font-medium text-zinc-500">Dashboard</span>
           </div>
           {children}
           {modal}
