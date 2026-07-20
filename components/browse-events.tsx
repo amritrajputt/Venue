@@ -22,10 +22,13 @@ import {
     Info,
     Check,
     Globe,
-    UserCheck
+    UserCheck,
+    Lock,
+    LogIn
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { authClient } from "@/lib/auth-client";
 
 export type BrowseEventItem = {
     eventId: number;
@@ -39,6 +42,7 @@ export type BrowseEventItem = {
     attendees: number;
     isJoined?: boolean;
     rawDate?: number;
+    autoOpenDetails?: boolean;
 };
 
 export function BrowseEvents({
@@ -52,9 +56,12 @@ export function BrowseEvents({
     dateTime,
     location,
     isJoined = false,
+    autoOpenDetails = false,
 }: BrowseEventItem) {
     const router = useRouter();
-    const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+    const { data: session } = authClient.useSession();
+    const [isDetailsOpen, setIsDetailsOpen] = useState(autoOpenDetails);
+    const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
     const [copied, setCopied] = useState(false);
 
     const handleRegisterClick = () => {
@@ -62,15 +69,20 @@ export function BrowseEvents({
             toast.info("You are already registered for this event!");
             return;
         }
+        if (!session) {
+            toast.error("401 Unauthorized: Please sign in to register for events");
+            setIsAuthModalOpen(true);
+            return;
+        }
         router.push(`/upcoming-events/register-event?eventId=${eventId}`);
     };
 
     const handleShareClick = (e: React.MouseEvent) => {
         e.stopPropagation();
-        const shareUrl = `${window.location.origin}/upcoming-events/register-event?eventId=${eventId}`;
+        const shareUrl = `${window.location.origin}/upcoming-events?eventId=${eventId}`;
         navigator.clipboard.writeText(shareUrl);
         setCopied(true);
-        toast.success("Event link copied to clipboard!");
+        toast.success("Event share link copied to clipboard!");
         setTimeout(() => setCopied(false), 2000);
     };
 
@@ -290,6 +302,49 @@ export function BrowseEvents({
                             </Button>
                         </DialogFooter>
                     </div>
+                </DialogContent>
+            </Dialog>
+
+            {/* 401 Unauthenticated Modal Dialog */}
+            <Dialog open={isAuthModalOpen} onOpenChange={setIsAuthModalOpen}>
+                <DialogContent className="max-w-md p-6 rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-center space-y-4">
+                    <div className="mx-auto size-14 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500">
+                        <Lock className="size-7" />
+                    </div>
+                    
+                    <DialogHeader className="space-y-1 text-center">
+                        <DialogTitle className="text-xl font-extrabold text-zinc-900 dark:text-zinc-50">
+                            Authentication Required
+                        </DialogTitle>
+                        <DialogDescription className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                            You are not signed in. You must log in to your account to register for <span className="font-semibold text-zinc-800 dark:text-zinc-200">"{title}"</span> and receive ticket confirmations.
+                        </DialogDescription>
+                    </DialogHeader>
+
+                    <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-900 dark:text-amber-300 text-xs font-semibold">
+                        Unauthenticated Guest
+                    </div>
+
+                    <DialogFooter className="flex-col sm:flex-row gap-2 pt-2">
+                        <Button
+                            variant="outline"
+                            onClick={() => setIsAuthModalOpen(false)}
+                            className="w-full sm:flex-1 rounded-xl cursor-pointer"
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            onClick={() => {
+                                setIsAuthModalOpen(false);
+                                const targetUrl = `/upcoming-events/register-event?eventId=${eventId}`;
+                                router.push(`/sign-in?callbackUrl=${encodeURIComponent(targetUrl)}`);
+                            }}
+                            className="w-full sm:flex-1 rounded-xl font-bold bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer"
+                        >
+                            <LogIn className="size-4 mr-1.5" />
+                            Sign In Now
+                        </Button>
+                    </DialogFooter>
                 </DialogContent>
             </Dialog>
         </>

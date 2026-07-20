@@ -13,17 +13,18 @@ export const POST = async (req: Request) => {
         });
 
         if (!session) {
-            return ApiResponse.error("Unauthorized", 401);
+            return ApiResponse.error("Unauthorized: Please sign in to register for events", 401);
         }
 
         const body = await req.json();
-        const eventId = body.eventId;
+        const eventId = Number(body.eventId);
         const attendeeName = body.attendeeName || body.name;
         const attendeeEmail = body.attendeeEmail || body.email;
         const age = body.age;
 
-        if (!eventId) {
-            return ApiResponse.error("Event ID is required", 400);
+        // fix #1: validate eventId is a real number, not NaN
+        if (!body.eventId || Number.isNaN(eventId)) {
+            return ApiResponse.error("Valid Event ID is required", 400);
         }
 
         const targetEventData = await db
@@ -34,7 +35,7 @@ export const POST = async (req: Request) => {
             })
             .from(eventsTable)
             .leftJoin(user, eq(eventsTable.userId, user.id))
-            .where(eq(eventsTable.id, Number(eventId)))
+            .where(eq(eventsTable.id, eventId))
             .then((res) => res[0]);
 
         if (!targetEventData) {
@@ -46,7 +47,7 @@ export const POST = async (req: Request) => {
             .from(attendeeTable)
             .where(
                 and(
-                    eq(attendeeTable.eventId, Number(eventId)),
+                    eq(attendeeTable.eventId, eventId),
                     eq(attendeeTable.userId, session.user.id)
                 )
             )
@@ -56,17 +57,23 @@ export const POST = async (req: Request) => {
             return ApiResponse.error("You have already registered for this event", 400);
         }
 
-        const [newAttendee] = await db.insert(attendeeTable).values({
-            eventId: Number(eventId),
-            name: String(attendeeName || session.user.name),
-            email: String(attendeeEmail || session.user.email),
-            age: Number(age || 20),
-            userId: session.user.id,
-        }).returning();
+        // fix #3: wrap insert + count update in a transaction
+        const newAttendee = await db.transaction(async (tx) => {
+            const [attendee] = await tx.insert(attendeeTable).values({
+                eventId,
+                name: String(attendeeName || session.user.name),
+                email: String(attendeeEmail || session.user.email),
+                // fix #2: use ?? instead of || so age=0 isn't overwritten
+                age: Number(age ?? 20),
+                userId: session.user.id,
+            }).returning();
 
-        await db.update(eventsTable).set({
-            attendees: sql`${eventsTable.attendees} + 1`,
-        }).where(eq(eventsTable.id, Number(eventId)));
+            await tx.update(eventsTable).set({
+                attendees: sql`${eventsTable.attendees} + 1`,
+            }).where(eq(eventsTable.id, eventId));
+
+            return attendee;
+        });
 
         const formatDate = (epochSec: number) => {
             return new Date(epochSec * 1000).toLocaleDateString("en-US", {
@@ -84,21 +91,24 @@ export const POST = async (req: Request) => {
             });
         };
 
-        // Dispatch Inngest event for background email sending
-        await inngest.send({
-            name: "app/registration.confirmed",
-            data: {
-                to: newAttendee.email,
-                userName: newAttendee.name,
-                eventName: targetEventData.event.title,
-                eventDate: formatDate(targetEventData.event.date),
-                eventTime: formatTime(targetEventData.event.startTime),
-                eventVenue: targetEventData.event.location,
-                registrationId: crypto.randomUUID(),
-                organizerName: targetEventData.organizerName || "Event Organizer",
-                organizerContact: targetEventData.organizerEmail || process.env.SMTP_EMAIL || "",
-            },
-        });
+        try {
+            await inngest.send({
+                name: "app/registration.confirmed",
+                data: {
+                    to: newAttendee.email,
+                    userName: newAttendee.name,
+                    eventName: targetEventData.event.title,
+                    eventDate: formatDate(targetEventData.event.date),
+                    eventTime: formatTime(targetEventData.event.startTime),
+                    eventVenue: targetEventData.event.location,
+                    registrationId: String(newAttendee.id),
+                    organizerName: targetEventData.organizerName || "Event Organizer",
+                    organizerContact: targetEventData.organizerEmail || process.env.SMTP_EMAIL || "",
+                },
+            });
+        } catch (dispatchErr) {
+            console.error("Failed to dispatch confirmation email event:", dispatchErr);
+        }
 
         return ApiResponse.success(newAttendee, "Event registered successfully", 200);
     } catch (error: any) {

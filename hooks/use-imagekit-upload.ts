@@ -40,6 +40,7 @@ export function useImageKitUpload() {
                 publicKey,
                 file,
                 fileName: file.name,
+                folder: "/venue",
                 onProgress: (event) => {
                     setProgress((event.loaded / event.total) * 100);
                 },

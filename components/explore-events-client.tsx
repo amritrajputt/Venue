@@ -27,14 +27,17 @@ export function ExploreEventsClient({ initialEvents }: ExploreEventsClientProps)
     const initialCity = searchParams.get("city") || "ALL";
     const initialDate = (searchParams.get("date") as "ALL" | "TODAY" | "UPCOMING") || "ALL";
     const initialSort = (searchParams.get("sort") as "SOONEST" | "NEWEST" | "POPULAR") || "SOONEST";
+    const targetEventId = searchParams.get("eventId");
 
     const [searchQuery, setSearchQuery] = useState(initialQ);
     const [selectedCity, setSelectedCity] = useState<string>(initialCity);
     const [dateFilter, setDateFilter] = useState<"ALL" | "TODAY" | "UPCOMING">(initialDate);
     const [sortBy, setSortBy] = useState<"SOONEST" | "NEWEST" | "POPULAR">(initialSort);
 
+    // Sync filter state to URL query string on /upcoming-events route
     useEffect(() => {
         const params = new URLSearchParams();
+        if (targetEventId) params.set("eventId", targetEventId);
         if (searchQuery.trim()) params.set("q", searchQuery.trim());
         if (selectedCity !== "ALL") params.set("city", selectedCity);
         if (dateFilter !== "ALL") params.set("date", dateFilter);
@@ -43,8 +46,9 @@ export function ExploreEventsClient({ initialEvents }: ExploreEventsClientProps)
         const queryString = params.toString();
         const targetUrl = queryString ? `${pathname}?${queryString}` : pathname;
         router.replace(targetUrl, { scroll: false });
-    }, [searchQuery, selectedCity, dateFilter, sortBy, pathname, router]);
+    }, [searchQuery, selectedCity, dateFilter, sortBy, targetEventId, pathname, router]);
 
+    // Extract unique city list from events
     const cities = useMemo(() => {
         const set = new Set<string>();
         initialEvents.forEach((item) => {
@@ -56,11 +60,14 @@ export function ExploreEventsClient({ initialEvents }: ExploreEventsClientProps)
         return Array.from(set).sort();
     }, [initialEvents]);
 
+    // Filter and sort events
     const filteredEvents = useMemo(() => {
         const nowSec = Math.floor(Date.now() / 1000);
+        const highlightedId = targetEventId ? Number(targetEventId) : null;
 
         return initialEvents
             .filter((item) => {
+                // Keyword search in title, description, location, or creator name
                 if (searchQuery.trim()) {
                     const q = searchQuery.toLowerCase().trim();
                     const matchTitle = item.title.toLowerCase().includes(q);
@@ -72,12 +79,14 @@ export function ExploreEventsClient({ initialEvents }: ExploreEventsClientProps)
                     }
                 }
 
+                // City filter
                 if (selectedCity !== "ALL") {
                     if (item.location.toLowerCase() !== selectedCity.toLowerCase()) {
                         return false;
                     }
                 }
 
+                // Date filter
                 if (dateFilter === "UPCOMING" && item.rawDate) {
                     if (item.rawDate < nowSec - 86400) return false;
                 } else if (dateFilter === "TODAY" && item.rawDate) {
@@ -89,6 +98,12 @@ export function ExploreEventsClient({ initialEvents }: ExploreEventsClientProps)
                 return true;
             })
             .sort((a, b) => {
+                // Prioritize shared target event at top if present
+                if (highlightedId) {
+                    if (a.eventId === highlightedId) return -1;
+                    if (b.eventId === highlightedId) return 1;
+                }
+
                 if (sortBy === "SOONEST") {
                     return (a.rawDate || 0) - (b.rawDate || 0);
                 } else if (sortBy === "NEWEST") {
@@ -98,23 +113,27 @@ export function ExploreEventsClient({ initialEvents }: ExploreEventsClientProps)
                 }
                 return 0;
             });
-    }, [initialEvents, searchQuery, selectedCity, dateFilter, sortBy]);
+    }, [initialEvents, searchQuery, selectedCity, dateFilter, sortBy, targetEventId]);
 
-    const isFiltered = searchQuery.trim() !== "" || selectedCity !== "ALL" || dateFilter !== "ALL";
+    const isFiltered = searchQuery.trim() !== "" || selectedCity !== "ALL" || dateFilter !== "ALL" || !!targetEventId;
 
     const resetFilters = () => {
         setSearchQuery("");
         setSelectedCity("ALL");
         setDateFilter("ALL");
         setSortBy("SOONEST");
+        router.replace(pathname, { scroll: false });
     };
 
     return (
         <div className="space-y-8">
+            {/* Search and Filters Toolbar */}
             <div className="rounded-3xl border border-zinc-200/80 bg-white/80 dark:border-zinc-800/80 dark:bg-zinc-900/60 p-4 sm:p-6 shadow-lg backdrop-blur-md space-y-4">
                 
+                {/* Search input + Filters row */}
                 <div className="flex flex-col lg:flex-row gap-3">
                     
+                    {/* Search bar */}
                     <div className="relative flex-1">
                         <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-zinc-400" />
                         <Input
@@ -134,6 +153,7 @@ export function ExploreEventsClient({ initialEvents }: ExploreEventsClientProps)
                         )}
                     </div>
 
+                    {/* Location select dropdown */}
                     <div className="flex gap-2 sm:gap-3 flex-wrap sm:flex-nowrap">
                         <div className="relative min-w-[150px] flex-1 sm:flex-initial">
                             <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-primary" />
@@ -151,6 +171,7 @@ export function ExploreEventsClient({ initialEvents }: ExploreEventsClientProps)
                             </select>
                         </div>
 
+                        {/* Sort select dropdown */}
                         <div className="relative min-w-[150px] flex-1 sm:flex-initial">
                             <ArrowUpDown className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-primary" />
                             <select
@@ -166,8 +187,10 @@ export function ExploreEventsClient({ initialEvents }: ExploreEventsClientProps)
                     </div>
                 </div>
 
+                {/* Filter chips & Result stats row */}
                 <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-zinc-100 dark:border-zinc-800/60">
                     
+                    {/* Date quick filter buttons */}
                     <div className="flex items-center gap-2 flex-wrap">
                         <span className="text-xs font-medium text-zinc-400 flex items-center gap-1 mr-1">
                             <Calendar className="size-3.5" /> Date:
@@ -199,6 +222,7 @@ export function ExploreEventsClient({ initialEvents }: ExploreEventsClientProps)
                         </Button>
                     </div>
 
+                    {/* Results count & Clear filters button */}
                     <div className="flex items-center gap-3 ml-auto">
                         <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">
                             Showing <span className="text-primary font-bold">{filteredEvents.length}</span> of {initialEvents.length} events
@@ -219,6 +243,7 @@ export function ExploreEventsClient({ initialEvents }: ExploreEventsClientProps)
                 </div>
             </div>
 
+            {/* Events Grid / Empty State */}
             {filteredEvents.length === 0 ? (
                 <div className="flex flex-col items-center justify-center text-center py-20 px-6 rounded-3xl border border-dashed border-zinc-200 dark:border-zinc-800 bg-white/40 dark:bg-zinc-900/20 backdrop-blur-sm space-y-4">
                     <div className="p-4 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-400">
@@ -243,7 +268,11 @@ export function ExploreEventsClient({ initialEvents }: ExploreEventsClientProps)
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {filteredEvents.map((item) => (
-                        <BrowseEvents key={item.eventId} {...item} />
+                        <BrowseEvents
+                            key={item.eventId}
+                            {...item}
+                            autoOpenDetails={targetEventId ? Number(targetEventId) === item.eventId : false}
+                        />
                     ))}
                 </div>
             )}

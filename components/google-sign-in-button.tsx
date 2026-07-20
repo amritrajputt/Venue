@@ -17,6 +17,9 @@ export function GoogleSignInButton({ callbackUrl }: { callbackUrl?: string }) {
     if (res.data?.url) {
       window.location.href = res.data.url
     } else {
+      if (res.error) {
+        console.error("Google Auth Error:", res.error)
+      }
       setLoading(false)
     }
   }

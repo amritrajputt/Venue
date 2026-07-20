@@ -5,6 +5,7 @@ export const registrationConfirmationEmail = inngest.createFunction(
   {
     id: "registration-confirmation-mail",
     name: "Registration Confirmation Email",
+    retries: 4,
     triggers: [{ event: "app/registration.confirmed" }],
   },
   async ({ event, step }) => {
