@@ -104,6 +104,8 @@ export const POST = async (req: Request) => {
                     registrationId: String(newAttendee.id),
                     organizerName: targetEventData.organizerName || "Event Organizer",
                     organizerContact: targetEventData.organizerEmail || process.env.SMTP_EMAIL || "",
+                    eventId: targetEventData.event.id,
+                    attendeeId: newAttendee.id,
                 },
             });
         } catch (dispatchErr) {
