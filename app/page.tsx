@@ -14,15 +14,20 @@ import { authClient } from "@/lib/auth-client";
 
 export default function Home() {
   const router = useRouter();
+  const { data: session } = authClient.useSession();
+
   const handleGetstarted = (path: string) => {
     router.push(path);
   }
-  const handleCreateEvent = (path:string) => {
-    const session = authClient.getSession();
-    if(!session){
+
+  const handleCreateEvent = () => {
+    if (!session) {
       router.push("/sign-in");
-    }else router.push("/dashboard/events")
+    } else {
+      router.push("/dashboard/events");
+    }
   }
+
   return (
     <div className="flex flex-col min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 transition-colors duration-300">
       
@@ -59,12 +64,21 @@ export default function Home() {
  
           <div className="flex items-center gap-4">
             <ModeToggle />
-            <Link
-              href="/sign-in"
-              className="text-sm font-medium text-zinc-600 hover:text-primary dark:text-zinc-400 dark:hover:text-primary transition-colors  px-4 py-2 rounded-full"
-            >
-              Sign In
-            </Link>
+            {session ? (
+              <Link
+                href="/dashboard/events"
+                className="text-sm font-medium text-primary hover:text-primary/80 transition-colors px-4 py-2 rounded-full border border-primary/20 bg-primary/10"
+              >
+                Dashboard
+              </Link>
+            ) : (
+              <Link
+                href="/sign-in"
+                className="text-sm font-medium text-zinc-600 hover:text-primary dark:text-zinc-400 dark:hover:text-primary transition-colors px-4 py-2 rounded-full"
+              >
+                Sign In
+              </Link>
+            )}
           </div>
         </div>
       </header>

@@ -71,11 +71,28 @@ export default async function ExploreEventsPage() {
             <p className="text-base text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-lg">
               Browse open community sessions, workshops, and meetups. Find something that excites you and register instantly.
             </p>
-            <div className="flex items-center gap-3 text-sm text-zinc-500 dark:text-zinc-400 pt-2">
+            <div className="flex items-center gap-4 text-sm text-zinc-500 dark:text-zinc-400 pt-2">
               <div className="flex items-center gap-1.5">
                 <div className="size-2 rounded-full bg-emerald-500 animate-pulse" />
                 <span>{publicEvents.length} {publicEvents.length === 1 ? 'event' : 'events'} live</span>
               </div>
+              {session && (
+                <>
+                  <div className="h-4 w-px bg-zinc-300 dark:bg-zinc-700" />
+                  <div className="flex items-center gap-2">
+                    <div className="size-7 rounded-full overflow-hidden border border-zinc-200 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800 shrink-0">
+                      {session.user.image ? (
+                        <img src={session.user.image} alt={session.user.name} className="size-full object-cover" />
+                      ) : (
+                        <div className="size-full flex items-center justify-center font-bold text-xs bg-primary text-primary-foreground">
+                          {session.user.name?.charAt(0) || "U"}
+                        </div>
+                      )}
+                    </div>
+                    <span className="text-zinc-600 dark:text-zinc-400 text-sm">Hi, <span className="font-semibold text-zinc-900 dark:text-zinc-100">{session.user.name?.split(' ')[0]}</span></span>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
