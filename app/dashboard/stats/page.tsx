@@ -50,7 +50,7 @@ export default async function StatsPage() {
         
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           <div className="flex items-center gap-4 rounded-3xl border border-zinc-200/80 bg-white/45 p-6 dark:border-zinc-800/80 dark:bg-zinc-900/20 backdrop-blur-sm shadow-sm">
-            <div className="p-3.5 rounded-2xl bg-pink-100 dark:bg-pink-900/20 text-pink-600 dark:text-pink-400">
+            <div className="p-3.5 rounded-2xl bg-primary/10 text-primary">
               <FolderKanban className="size-6" />
             </div>
             <div>
@@ -60,7 +60,7 @@ export default async function StatsPage() {
           </div>
 
           <div className="flex items-center gap-4 rounded-3xl border border-zinc-200/80 bg-white/45 p-6 dark:border-zinc-800/80 dark:bg-zinc-900/20 backdrop-blur-sm shadow-sm">
-            <div className="p-3.5 rounded-2xl bg-violet-100 dark:bg-violet-900/20 text-violet-600 dark:text-violet-400">
+            <div className="p-3.5 rounded-2xl bg-primary/10 text-primary">
               <Users className="size-6" />
             </div>
             <div>
@@ -104,7 +104,7 @@ export default async function StatsPage() {
                       <td className="px-6 py-4 font-semibold text-zinc-900 dark:text-zinc-50">{event.title}</td>
                       <td className="px-6 py-4 text-zinc-600 dark:text-zinc-400">{formatDate(event.date)}</td>
                       <td className="px-6 py-4 text-zinc-600 dark:text-zinc-400">{event.location}</td>
-                      <td className="px-6 py-4 text-right font-bold text-pink-600 dark:text-pink-400">{attendeeCount}</td>
+                      <td className="px-6 py-4 text-right font-bold text-primary">{attendeeCount}</td>
                     </tr>
                   ))}
                 </tbody>

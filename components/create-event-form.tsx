@@ -175,7 +175,7 @@ export function EventForm({ initialData, onSuccess }: CreateEventFormProps = {})
                         placeholder="Event Title"
                         value={values.title}
                         onChange={(e) => setValue({ ...values, title: e.target.value })}
-                        className="flex h-11 w-full rounded-xl border border-zinc-200/80 bg-white px-4 py-2.5 text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 dark:border-zinc-800/80 dark:bg-zinc-950 dark:placeholder:text-zinc-600 transition-all duration-200"
+                        className="flex h-11 w-full rounded-xl border border-zinc-200/80 bg-white px-4 py-2.5 text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary dark:border-zinc-800/80 dark:bg-zinc-950 dark:placeholder:text-zinc-600 transition-all duration-200"
                         required
                     />
                 </div>
@@ -186,7 +186,7 @@ export function EventForm({ initialData, onSuccess }: CreateEventFormProps = {})
                         placeholder="Event Date"
                         value={values.date}
                         onChange={(e) => setValue({ ...values, date: e.target.value })}
-                        className="flex h-11 w-full rounded-xl border border-zinc-200/80 bg-white px-4 py-2.5 text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 dark:border-zinc-800/80 dark:bg-zinc-950 dark:placeholder:text-zinc-600 transition-all duration-200"
+                        className="flex h-11 w-full rounded-xl border border-zinc-200/80 bg-white px-4 py-2.5 text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary dark:border-zinc-800/80 dark:bg-zinc-950 dark:placeholder:text-zinc-600 transition-all duration-200"
                         required
                     />
                 </div>
@@ -199,7 +199,7 @@ export function EventForm({ initialData, onSuccess }: CreateEventFormProps = {})
                         placeholder="Start Time"
                         value={values.startTime}
                         onChange={(e) => setValue({ ...values, startTime: e.target.value })}
-                        className="flex h-11 w-full rounded-xl border border-zinc-200/80 bg-white px-4 py-2.5 text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 dark:border-zinc-800/80 dark:bg-zinc-950 dark:placeholder:text-zinc-600 transition-all duration-200"
+                        className="flex h-11 w-full rounded-xl border border-zinc-200/80 bg-white px-4 py-2.5 text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary dark:border-zinc-800/80 dark:bg-zinc-950 dark:placeholder:text-zinc-600 transition-all duration-200"
                         required
                     />
                 </div>
@@ -210,7 +210,7 @@ export function EventForm({ initialData, onSuccess }: CreateEventFormProps = {})
                         placeholder="Duration (in minutes)"
                         value={values.duration}
                         onChange={(e) => setValue({ ...values, duration: e.target.value })}
-                        className="flex h-11 w-full rounded-xl border border-zinc-200/80 bg-white px-4 py-2.5 text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 dark:border-zinc-800/80 dark:bg-zinc-950 dark:placeholder:text-zinc-600 transition-all duration-200"
+                        className="flex h-11 w-full rounded-xl border border-zinc-200/80 bg-white px-4 py-2.5 text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary dark:border-zinc-800/80 dark:bg-zinc-950 dark:placeholder:text-zinc-600 transition-all duration-200"
                         required
                     />
                 </div>
@@ -222,7 +222,7 @@ export function EventForm({ initialData, onSuccess }: CreateEventFormProps = {})
                         placeholder="Location"
                         value={values.location}
                         onChange={(e) => setValue({ ...values, location: e.target.value })}
-                        className="flex h-11 w-full rounded-xl border border-zinc-200/80 bg-white px-4 py-2.5 text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 dark:border-zinc-800/80 dark:bg-zinc-950 dark:placeholder:text-zinc-600 transition-all duration-200"
+                        className="flex h-11 w-full rounded-xl border border-zinc-200/80 bg-white px-4 py-2.5 text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary dark:border-zinc-800/80 dark:bg-zinc-950 dark:placeholder:text-zinc-600 transition-all duration-200"
                         required
                     />
                 </div>
@@ -232,7 +232,7 @@ export function EventForm({ initialData, onSuccess }: CreateEventFormProps = {})
                         placeholder="Description"
                         value={values.description}
                         onChange={(e) => setValue({ ...values, description: e.target.value })}
-                        className="flex h-11 w-full rounded-xl border border-zinc-200/80 bg-white px-4 py-2.5 text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 dark:border-zinc-800/80 dark:bg-zinc-950 dark:placeholder:text-zinc-600 transition-all duration-200"
+                        className="flex h-11 w-full rounded-xl border border-zinc-200/80 bg-white px-4 py-2.5 text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary dark:border-zinc-800/80 dark:bg-zinc-950 dark:placeholder:text-zinc-600 transition-all duration-200"
                         required
                     />
                 </div>
@@ -252,7 +252,7 @@ export function EventForm({ initialData, onSuccess }: CreateEventFormProps = {})
                     id="isPrivate"
                     checked={values.isPrivate}
                     onChange={(e) => setValue({ ...values, isPrivate: e.target.checked })}
-                    className="size-5 rounded border-zinc-300 text-pink-600 focus:ring-pink-500 cursor-pointer accent-pink-600"
+                    className="size-5 rounded border-zinc-300 text-primary focus:ring-primary cursor-pointer accent-primary"
                 />
             </div>
 
@@ -268,7 +268,7 @@ export function EventForm({ initialData, onSuccess }: CreateEventFormProps = {})
                             </div>
                             <div className="h-1.5 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
                                 <div
-                                    className="h-full bg-gradient-to-r from-pink-500 to-violet-500 rounded-full transition-all duration-300"
+                                    className="h-full bg-primary rounded-full transition-all duration-300"
                                     style={{ width: `${progress}%` }}
                                 />
                             </div>

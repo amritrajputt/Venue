@@ -147,7 +147,7 @@ export function DashboardSidebar({ user, plan = "Free" }: DashboardSidebarProps)
                 {user.image ? (
                   <img src={user.image} alt={user.name} className="size-full object-cover" />
                 ) : (
-                  <div className="size-full flex items-center justify-center font-bold text-sm bg-gradient-to-br from-pink-500 to-violet-500 text-white">
+                  <div className="size-full flex items-center justify-center font-bold text-sm bg-primary text-primary-foreground">
                     {user.name.charAt(0)}
                   </div>
                 )}

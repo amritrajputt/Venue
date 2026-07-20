@@ -41,7 +41,7 @@ export function BrowseEvents({
     };
 
     return (
-        <Card className="group relative flex flex-col justify-between overflow-hidden border border-zinc-200/80 bg-white/50 shadow-md backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-pink-500/5 dark:border-zinc-800/80 dark:bg-zinc-900/30 dark:hover:shadow-pink-500/10 w-full">
+        <Card className="group relative flex flex-col justify-between overflow-hidden border border-zinc-200/80 bg-white/50 shadow-md backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5 dark:border-zinc-800/80 dark:bg-zinc-900/30 dark:hover:shadow-primary/10 w-full">
 
             <div className="relative aspect-video w-full overflow-hidden bg-zinc-100 dark:bg-zinc-900">
                 <img
@@ -52,7 +52,7 @@ export function BrowseEvents({
 
                 <div className="absolute top-3 left-3 z-10">
                     <Badge variant="secondary" className="backdrop-blur-md bg-white/80 dark:bg-zinc-950/80 text-zinc-900 dark:text-zinc-50 border border-white/20 shadow-sm">
-                        <Users className="size-3.5 mr-1 text-pink-500 dark:text-pink-400" />
+                        <Users className="size-3.5 mr-1 text-primary" />
                         <span>{attendees} Registered</span>
                     </Badge>
                 </div>
@@ -60,28 +60,28 @@ export function BrowseEvents({
 
             <CardHeader className="space-y-2 pt-4">
                 <div className="flex items-center gap-2">
-                    <span className="text-xs font-semibold uppercase tracking-wider text-pink-600 dark:text-pink-400">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-primary">
                         Hosted by {name}
                     </span>
                 </div>
-                <CardTitle className="line-clamp-2 text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 transition-colors group-hover:text-pink-600 dark:group-hover:text-pink-400">
+                <CardTitle className="line-clamp-2 text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 transition-colors group-hover:text-primary">
                     {title}
                 </CardTitle>
             </CardHeader>
 
             <CardContent className="space-y-3 pb-4">
                 <div className="flex items-center gap-2.5 text-sm text-zinc-600 dark:text-zinc-400">
-                    <Calendar className="size-4 shrink-0 text-pink-500/70 dark:text-pink-400/70" />
+                    <Calendar className="size-4 shrink-0 text-primary/70" />
                     <span className="font-medium">{date}</span>
                 </div>
 
                 <div className="flex items-center gap-2.5 text-sm text-zinc-600 dark:text-zinc-400">
-                    <Clock className="size-4 shrink-0 text-pink-500/70 dark:text-pink-400/70" />
+                    <Clock className="size-4 shrink-0 text-primary/70" />
                     <span>{dateTime}</span>
                 </div>
 
                 <div className="flex items-center gap-2.5 text-sm text-zinc-600 dark:text-zinc-400">
-                    <MapPin className="size-4 shrink-0 text-pink-500/70 dark:text-pink-400/70" />
+                    <MapPin className="size-4 shrink-0 text-primary/70" />
                     <span className="line-clamp-1">{location}</span>
                 </div>
             </CardContent>

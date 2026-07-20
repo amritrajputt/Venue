@@ -29,7 +29,7 @@ export default function Home() {
             <div className="size-8 rounded-md overflow-hidden flex items-center justify-center bg-zinc-100 dark:bg-zinc-900">
               <img src="/4085.jpg" alt="Venue Logo" className="w-full h-full object-cover scale-150" />
             </div>
-            <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-pink-600 to-pink-600 bg-clip-text text-transparent dark:from-pink-400 dark:to-pink-400">
+            <span className="text-xl font-bold tracking-tight text-primary">
               Venue
             </span>
           </Link>
@@ -37,17 +37,17 @@ export default function Home() {
           <nav>
             <ul className="flex items-center gap-6 text-sm font-medium text-zinc-600 dark:text-zinc-400 ">
               <li>
-                <Link href="/" className="transition-colors hover:text-pink-500 dark:hover:text-pink-500">
+                <Link href="/" className="transition-colors hover:text-primary">
                   Home
                 </Link>
               </li>
               <li>
-                <Link href="#features" className="transition-colors hover:text-pink-500 dark:hover:text-pink-500">
+                <Link href="#features" className="transition-colors hover:text-primary">
                   Features
                 </Link>
               </li>
               <li>
-                <Link href="#steps" className="transition-colors hover:text-pink-500 dark:hover:text-pink-500">
+                <Link href="#steps" className="transition-colors hover:text-primary">
                   How It Works
                 </Link>
               </li>
@@ -58,7 +58,7 @@ export default function Home() {
             <ModeToggle />
             <Link
               href="/sign-in"
-              className="text-sm font-medium text-zinc-600 hover:text-pink-500 dark:text-zinc-400 dark:hover:text-pink-500 transition-colors  px-4 py-2 rounded-full"
+              className="text-sm font-medium text-zinc-600 hover:text-primary dark:text-zinc-400 dark:hover:text-primary transition-colors  px-4 py-2 rounded-full"
             >
               Sign In
             </Link>
@@ -69,8 +69,8 @@ export default function Home() {
       <main className="flex-1 relative overflow-hidden flex flex-col items-center pt-8 lg:pt-16 pb-24">
         
         <div className="absolute inset-0 -z-10 overflow-hidden">
-          <div className="absolute left-[5%] top-[10%] h-[500px] w-[500px] rounded-full bg-pink-500/10 blur-3xl dark:bg-pink-500/5" />
-          <div className="absolute right-[5%] bottom-[10%] h-[500px] w-[500px] rounded-full bg-violet-500/10 blur-3xl dark:bg-violet-500/5" />
+          <div className="absolute left-[5%] top-[10%] h-[500px] w-[500px] rounded-full bg-primary/10 blur-3xl dark:bg-primary/5" />
+          <div className="absolute right-[5%] bottom-[10%] h-[500px] w-[500px] rounded-full bg-red-400/10 blur-3xl dark:bg-red-400/5" />
         </div>
  
         <div className="mx-auto max-w-7xl w-full px-6 pt-4 pb-16 lg:pt-8 lg:pb-24 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -78,21 +78,21 @@ export default function Home() {
           <div className="flex flex-col items-center lg:items-start text-center lg:text-left space-y-6 lg:space-y-8 max-w-2xl mx-auto lg:mx-0">
             <h1 className="text-4xl font-extrabold tracking-tight sm:text-6xl text-zinc-950 dark:text-zinc-50 leading-none">
               Discover & create amazing, <br />
-              <span className="bg-gradient-to-r from-pink-600 to-violet-600 bg-clip-text text-transparent dark:from-pink-400 dark:to-violet-400">
+              <span className="text-primary">
                 <CanvasText
                   text="Events."
                   backgroundClassName="bg-zinc-50 dark:bg-zinc-950"
                   colors={[
-                    "rgba(236, 72, 153, 1)",
-                    "rgba(236, 72, 153, 0.9)",
-                    "rgba(236, 72, 153, 0.8)",
-                    "rgba(236, 72, 153, 0.7)",
-                    "rgba(236, 72, 153, 0.6)",
-                    "rgba(236, 72, 153, 0.5)",
-                    "rgba(236, 72, 153, 0.4)",
-                    "rgba(236, 72, 153, 0.3)",
-                    "rgba(236, 72, 153, 0.2)",
-                    "rgba(236, 72, 153, 0.1)",
+                    "oklch(0.514 0.222 16.935)",
+                    "oklch(0.534 0.222 16.935)",
+                    "oklch(0.554 0.222 16.935)",
+                    "oklch(0.574 0.222 16.935)",
+                    "oklch(0.594 0.222 16.935)",
+                    "oklch(0.614 0.222 16.935)",
+                    "oklch(0.634 0.222 16.935)",
+                    "oklch(0.654 0.222 16.935)",
+                    "oklch(0.674 0.222 16.935)",
+                    "oklch(0.694 0.222 16.935)",
                   ]}
                   lineGap={3}
                   animationDuration={10}
@@ -106,17 +106,17 @@ export default function Home() {
             </p>
      
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4">
-              <button onClick={() => handleCreateEvent('/dashboard/event')} className="rounded-full bg-gradient-to-r from-pink-600 to-violet-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:from-pink-500 hover:to-violet-500 hover:shadow-lg transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-600">
+              <button onClick={() => handleCreateEvent('/dashboard/event')} className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm hover:bg-primary/90 hover:shadow-lg transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
                 Create an Event
               </button>
-              <Link href="/upcoming-events" className="text-sm font-semibold leading-6 text-zinc-900 dark:text-zinc-300 hover:text-pink-600 dark:hover:text-pink-400 transition-colors">
+              <Link href="/upcoming-events" className="text-sm font-semibold leading-6 text-zinc-900 dark:text-zinc-300 hover:text-primary transition-colors">
                 Explore Events <span aria-hidden="true">→</span>
               </Link>
             </div>
           </div>
  
           <div className="relative w-full max-w-2xl mx-auto lg:max-w-none flex justify-center items-center lg:translate-x-6">
-            <div className="absolute inset-0 -z-10 bg-gradient-to-r from-pink-500/20 to-violet-500/20 rounded-3xl blur-2xl transform scale-95" />
+            <div className="absolute inset-0 -z-10 bg-primary/15 rounded-3xl blur-2xl transform scale-95" />
             <img
               src="/hero.png"
               alt="Venue Dashboard Demo"
@@ -127,7 +127,7 @@ export default function Home() {
  
         <div id="features" className="mx-auto max-w-7xl w-full px-6 py-20 lg:py-28 space-y-12 border-t border-zinc-200/40 dark:border-zinc-800/40">
           <div className="text-center max-w-3xl mx-auto space-y-4">
-            <span className="text-xs font-bold uppercase tracking-wider text-pink-600 dark:text-pink-400">Rich Ecosystem</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-primary">Rich Ecosystem</span>
             <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
               Everything you need to host events
             </h2>
@@ -140,7 +140,7 @@ export default function Home() {
            
             <div className="relative group overflow-hidden rounded-2xl border border-zinc-200/80 bg-white/50 p-8 hover:shadow-lg transition-all dark:border-zinc-800/80 dark:bg-zinc-900/30 backdrop-blur-sm">
               <div className="flex items-center gap-4">
-                <div className="p-3 rounded-xl bg-pink-100 dark:bg-pink-900/20 text-pink-600 dark:text-pink-400">
+                <div className="p-3 rounded-xl bg-primary/10 text-primary">
                   <CheckCircle2 className="size-6" />
                 </div>
                 <h3 className="text-xl font-bold">Seamless RSVP System</h3>
@@ -152,7 +152,7 @@ export default function Home() {
  
             <div className="relative group overflow-hidden rounded-2xl border border-zinc-200/80 bg-white/50 p-8 hover:shadow-lg transition-all dark:border-zinc-800/80 dark:bg-zinc-900/30 backdrop-blur-sm">
               <div className="flex items-center gap-4">
-                <div className="p-3 rounded-xl bg-violet-100 dark:bg-violet-900/20 text-violet-600 dark:text-violet-400">
+                <div className="p-3 rounded-xl bg-primary/10 text-primary">
                   <Search className="size-6" />
                 </div>
                 <h3 className="text-xl font-bold">Smart Search & Filter</h3>
@@ -164,7 +164,7 @@ export default function Home() {
  
             <div className="relative group overflow-hidden rounded-2xl border border-zinc-200/80 bg-white/50 p-8 hover:shadow-lg transition-all dark:border-zinc-800/80 dark:bg-zinc-900/30 backdrop-blur-sm">
               <div className="flex items-center gap-4">
-                <div className="p-3 rounded-xl bg-pink-100 dark:bg-pink-900/20 text-pink-600 dark:text-pink-400">
+                <div className="p-3 rounded-xl bg-primary/10 text-primary">
                   <Bell className="size-6" />
                 </div>
                 <h3 className="text-xl font-bold">Automated Communication</h3>
@@ -176,7 +176,7 @@ export default function Home() {
  
             <div className="relative group overflow-hidden rounded-2xl border border-zinc-200/80 bg-white/50 p-8 hover:shadow-lg transition-all dark:border-zinc-800/80 dark:bg-zinc-900/30 backdrop-blur-sm">
               <div className="flex items-center gap-4">
-                <div className="p-3 rounded-xl bg-violet-100 dark:bg-violet-900/20 text-violet-600 dark:text-violet-400">
+                <div className="p-3 rounded-xl bg-primary/10 text-primary">
                   <BarChart3 className="size-6" />
                 </div>
                 <h3 className="text-xl font-bold">Live Organizer Analytics</h3>
@@ -190,7 +190,7 @@ export default function Home() {
  
         <div id="steps" className="mx-auto max-w-7xl w-full px-6 py-20 lg:py-28 space-y-16 border-t border-zinc-200/50 dark:border-zinc-800/50">
           <div className="text-center max-w-3xl mx-auto space-y-4">
-            <span className="text-xs font-bold uppercase tracking-wider text-violet-600 dark:text-violet-400">Timeline</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-primary">Timeline</span>
             <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
               Host your next event in 3 simple steps
             </h2>
@@ -199,7 +199,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
             
             <div className="space-y-4">
-              <div className="mx-auto md:mx-0 size-10 rounded-full bg-pink-100 dark:bg-pink-900/20 text-pink-600 dark:text-pink-400 flex items-center justify-center font-bold text-base">
+              <div className="mx-auto md:mx-0 size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-base">
                 1
               </div>
               <h3 className="text-xl font-bold">Publish Details</h3>
@@ -209,7 +209,7 @@ export default function Home() {
             </div>
  
             <div className="space-y-4">
-              <div className="mx-auto md:mx-0 size-10 rounded-full bg-violet-100 dark:bg-violet-900/20 text-violet-600 dark:text-violet-400 flex items-center justify-center font-bold text-base">
+              <div className="mx-auto md:mx-0 size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-base">
                 2
               </div>
               <h3 className="text-xl font-bold">Share link</h3>
@@ -219,7 +219,7 @@ export default function Home() {
             </div>
  
             <div className="space-y-4">
-              <div className="mx-auto md:mx-0 size-10 rounded-full bg-pink-100 dark:bg-pink-900/20 text-pink-600 dark:text-pink-400 flex items-center justify-center font-bold text-base">
+              <div className="mx-auto md:mx-0 size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-base">
                 3
               </div>
               <h3 className="text-xl font-bold">Automated Emails</h3>
@@ -230,23 +230,6 @@ export default function Home() {
           </div>
         </div>
  
-        <div className="mx-auto max-w-7xl w-full px-6 py-12 border-t border-zinc-200/50 dark:border-zinc-800/50 pt-20">
-          <div className="relative overflow-hidden rounded-3xl bg-zinc-900 dark:bg-zinc-900 px-6 py-16 shadow-2xl text-center space-y-6 sm:px-12 sm:py-20 border border-zinc-800">
-            <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_center,rgba(236,72,153,0.15),transparent_60%)]" />
-            
-            <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl max-w-2xl mx-auto leading-tight">
-              Ready to host your next successful event?
-            </h2>
-            <p className="mx-auto max-w-xl text-base text-zinc-400 leading-relaxed">
-              Create an event dashboard in seconds, set RSVP capacity limits, and let Venue automate confirmation and reminder emails for you.
-            </p>
-            <div className="mt-8 flex justify-center gap-4">
-              <button className="rounded-full bg-white text-zinc-900 px-8 py-3 text-sm font-bold shadow-sm hover:bg-zinc-100 transition-colors">
-                Get Started Free
-              </button>
-            </div>
-          </div>
-        </div>
  
       </main>
  
@@ -257,7 +240,7 @@ export default function Home() {
               <div className="size-8 rounded-md overflow-hidden flex items-center justify-center bg-zinc-100 dark:bg-zinc-900">
                 <img src="/4085.jpg" alt="Venue Logo" className="w-full h-full object-cover scale-150" />
               </div>
-              <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-pink-600 to-pink-600 bg-clip-text text-transparent dark:from-pink-400 dark:to-pink-400">
+              <span className="text-xl font-bold tracking-tight text-primary">
                 Venue
               </span>
             </div>
@@ -268,15 +251,15 @@ export default function Home() {
           <div>
             <h4 className="text-xs font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-wider">Product</h4>
             <ul className="mt-4 space-y-2 text-xs text-zinc-500 dark:text-zinc-400 font-medium">
-              <li><Link href="/" className="hover:text-pink-600 transition-colors">Explore Events</Link></li>
-              <li><Link href="#features" className="hover:text-pink-600 transition-colors">Features</Link></li>
+              <li><Link href="/" className="hover:text-primary transition-colors">Explore Events</Link></li>
+              <li><Link href="#features" className="hover:text-primary transition-colors">Features</Link></li>
             </ul>
           </div>
           <div>
             <h4 className="text-xs font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-wider">About</h4>
             <ul className="mt-4 space-y-2 text-xs text-zinc-500 dark:text-zinc-400 font-medium">
-              <li><Link href="/" className="hover:text-pink-600 transition-colors">Terms of Service</Link></li>
-              <li><Link href="/" className="hover:text-pink-650 transition-colors">Privacy Policy</Link></li>
+              <li><Link href="/" className="hover:text-primary transition-colors">Terms of Service</Link></li>
+              <li><Link href="/" className="hover:text-primary transition-colors">Privacy Policy</Link></li>
             </ul>
           </div>
           <div>
@@ -290,8 +273,8 @@ export default function Home() {
         <div className="mx-auto max-w-7xl pt-8 mt-8 border-t border-zinc-200/30 dark:border-zinc-800/30 flex flex-col md:flex-row justify-between items-center text-[10px] font-medium text-zinc-400">
           <p>© {new Date().getFullYear()} Venue. All rights reserved.</p>
           <p className="mt-4 md:mt-0 flex gap-4">
-            <Link href="https://x.com/amrit_xrajput" className="hover:text-pink-600">Twitter</Link>
-            <Link href="https://github.com/amritrajputt" className="hover:text-pink-600">GitHub</Link>
+            <Link href="https://x.com/amrit_xrajput" className="hover:text-primary">Twitter</Link>
+            <Link href="https://github.com/amritrajputt" className="hover:text-primary">GitHub</Link>
           </p>
         </div>
       </footer>

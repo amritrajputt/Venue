@@ -37,7 +37,7 @@ export default async function ProfilePage() {
               {session.user.image ? (
                 <img src={session.user.image} alt={session.user.name} className="size-full object-cover" />
               ) : (
-                <div className="size-full flex items-center justify-center font-bold text-3xl bg-gradient-to-br from-pink-500 to-violet-500 text-white">
+                <div className="size-full flex items-center justify-center font-bold text-3xl bg-primary text-primary-foreground">
                   {session.user.name.charAt(0)}
                 </div>
               )}
