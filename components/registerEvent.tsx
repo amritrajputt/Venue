@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { User, Mail, Hash, Loader2, CalendarCheck } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -16,11 +17,15 @@ interface FormValues {
 }
 
 interface RegisterEventProps {
+  eventId?: number | string;
   onSuccess?: () => void;
   showCard?: boolean;
 }
 
-export default function RegisterEvent({ onSuccess, showCard = true }: RegisterEventProps) {
+export default function RegisterEvent({ eventId: propEventId, onSuccess, showCard = true }: RegisterEventProps) {
+  const searchParams = useSearchParams();
+  const eventId = propEventId || searchParams.get("eventId");
+
   const [values, setValues] = useState<FormValues>({
     name: "",
     email: "",
@@ -31,11 +36,22 @@ export default function RegisterEvent({ onSuccess, showCard = true }: RegisterEv
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!eventId) {
+      toast.error("Event ID is missing. Please select an event first.");
+      return;
+    }
+
     setIsSubmitting(true);
     try {
-      const res = await axios.post("api/attend-event", values);
+      const res = await axios.post("/api/attend-event", {
+        eventId: Number(eventId),
+        name: values.name,
+        email: values.email,
+        age: Number(values.age),
+      });
+
       if (res.status === 200) {
-        toast.success("Event registered successfully!");
+        toast.success(res.data?.message || "Event registered successfully!");
         setValues({
           name: "",
           email: "",
@@ -45,10 +61,11 @@ export default function RegisterEvent({ onSuccess, showCard = true }: RegisterEv
           onSuccess();
         }
       } else {
-        toast.error("Failed to register for event");
+        toast.error(res.data?.error || "Failed to register for event");
       }
-    } catch (error) {
-      toast.error("Failed to register for event");
+    } catch (error: any) {
+      const errMsg = error.response?.data?.error || error.response?.data?.message || "Failed to register for event";
+      toast.error(errMsg);
     } finally {
       setIsSubmitting(false);
     }

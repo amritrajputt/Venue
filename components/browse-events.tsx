@@ -37,7 +37,7 @@ export function BrowseEvents({
             toast.info("You are already registered for this event!");
             return;
         }
-        router.push("/upcoming-events/register-event");
+        router.push(`/upcoming-events/register-event?eventId=${eventId}`);
     };
 
     return (
