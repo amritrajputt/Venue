@@ -1,24 +1,11 @@
-"use client"
+"use client";
 
-import { useState } from "react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Calendar, Clock, MapPin, Users, ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-
-/**
- * TODO (TOMORROW'S ROADMAP):
- * 1. RSVP Registration Form Modal:
- *    - On clicking "Register for Event", open an RSVP Dialog form modal.
- *    - Form fields: Attendee Name, Email, Age, Phone number.
- * 2. API Submission (/api/attend-event):
- *    - Submit attendee form values along with eventId to the backend.
- * 3. Inngest Integration:
- *    - Trigger Inngest background function `inngest.send({ name: "event/rsvp.created", data: { ... } })`.
- *    - Inngest function generates QR Code ticket and sends confirmation email via Resend/Nodemailer.
- */
 
 type BrowseEventsProps = {
     eventId: number;
@@ -44,21 +31,17 @@ export function BrowseEvents({
     isJoined = false,
 }: BrowseEventsProps) {
     const router = useRouter();
-    const [isRsvpOpen, setIsRsvpOpen] = useState(false);
 
     const handleRegisterClick = () => {
         if (isJoined) {
             toast.info("You are already registered for this event!");
             return;
         }
-
-        // TODO (TOMORROW): Open RSVP Modal Form here or navigate to RSVP form page
-        setIsRsvpOpen(true);
-        toast.info("RSVP registration form will open here tomorrow!");
+        router.push("/upcoming-events/register-event");
     };
 
     return (
-        <Card className="group relative flex flex-col justify-between overflow-hidden border border-zinc-200/80 bg-white/50 shadow-md backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-pink-500/5 dark:border-zinc-800/80 dark:bg-zinc-900/30 dark:hover:shadow-pink-500/10 max-w-sm">
+        <Card className="group relative flex flex-col justify-between overflow-hidden border border-zinc-200/80 bg-white/50 shadow-md backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-pink-500/5 dark:border-zinc-800/80 dark:bg-zinc-900/30 dark:hover:shadow-pink-500/10 w-full">
 
             <div className="relative aspect-video w-full overflow-hidden bg-zinc-100 dark:bg-zinc-900">
                 <img
@@ -110,7 +93,7 @@ export function BrowseEvents({
                     variant={isJoined ? "secondary" : "outline"}
                     className="flex-1 cursor-pointer"
                 >
-                    <span>{isJoined ? "Registered ✓" : "Register / RSVP Event"}</span>
+                    <span>{isJoined ? "Registered ✓" : "Register"}</span>
                     {!isJoined && <ArrowRight className="size-4 ml-1.5 transition-transform group-hover:translate-x-1" />}
                 </Button>
             </CardFooter>
