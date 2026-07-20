@@ -18,7 +18,10 @@ export default function Home() {
     router.push(path);
   }
   const handleCreateEvent = (path:string) => {
-    router.push(path)
+    const session = authClient.getSession();
+    if(!session){
+      router.push("/sign-in");
+    }else router.push("/dashboard/events")
   }
   return (
     <div className="flex flex-col min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 transition-colors duration-300">
@@ -106,7 +109,7 @@ export default function Home() {
             </p>
      
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4">
-              <button onClick={() => handleCreateEvent('/dashboard/event')} className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm hover:bg-primary/90 hover:shadow-lg transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
+              <button onClick={() => handleCreateEvent()} className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm hover:bg-primary/90 hover:shadow-lg transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
                 Create an Event
               </button>
               <Link href="/upcoming-events" className="text-sm font-semibold leading-6 text-zinc-900 dark:text-zinc-300 hover:text-primary transition-colors">
@@ -190,47 +193,81 @@ export default function Home() {
  
         <div id="steps" className="mx-auto max-w-7xl w-full px-6 py-20 lg:py-28 space-y-16 border-t border-zinc-200/50 dark:border-zinc-800/50">
           <div className="text-center max-w-3xl mx-auto space-y-4">
-            <span className="text-xs font-bold uppercase tracking-wider text-primary">Timeline</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-primary">How It Works</span>
             <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
               Host your next event in 3 simple steps
             </h2>
+            <p className="text-base text-zinc-600 dark:text-zinc-400 leading-relaxed">
+              From creation to confirmation — everything is streamlined for you.
+            </p>
           </div>
  
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
+          <div className="relative grid grid-cols-1 md:grid-cols-3 gap-8">
             
-            <div className="space-y-4">
-              <div className="mx-auto md:mx-0 size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-base">
-                1
+            {/* Connector line (desktop only) */}
+            <div className="hidden md:block absolute top-14 left-[20%] right-[20%] h-[2px] bg-gradient-to-r from-primary/30 via-primary/60 to-primary/30 z-0" />
+
+            {/* Step 1 */}
+            <div className="relative z-10 group">
+              <div className="rounded-2xl border border-zinc-200/80 bg-white/60 dark:border-zinc-800/80 dark:bg-zinc-900/40 backdrop-blur-sm p-8 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 hover:-translate-y-1 h-full">
+                <div className="flex flex-col items-center text-center space-y-5">
+                  <div className="relative">
+                    <div className="size-14 rounded-2xl bg-primary text-primary-foreground flex items-center justify-center font-extrabold text-xl shadow-lg shadow-primary/20">
+                      1
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <h3 className="text-lg font-bold">Publish Details</h3>
+                    <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed text-sm">
+                      Fill in date, time, venue, and descriptions. Configure limits, capacities, and set waitlist details with ease.
+                    </p>
+                  </div>
+                </div>
               </div>
-              <h3 className="text-xl font-bold">Publish Details</h3>
-              <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed text-sm">
-                Fill in date, time, venue, and descriptions. Configure limits, capacities, and set waitlist details with ease.
-              </p>
             </div>
- 
-            <div className="space-y-4">
-              <div className="mx-auto md:mx-0 size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-base">
-                2
+
+            {/* Step 2 */}
+            <div className="relative z-10 group">
+              <div className="rounded-2xl border border-zinc-200/80 bg-white/60 dark:border-zinc-800/80 dark:bg-zinc-900/40 backdrop-blur-sm p-8 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 hover:-translate-y-1 h-full">
+                <div className="flex flex-col items-center text-center space-y-5">
+                  <div className="relative">
+                    <div className="size-14 rounded-2xl bg-primary text-primary-foreground flex items-center justify-center font-extrabold text-xl shadow-lg shadow-primary/20">
+                      2
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <h3 className="text-lg font-bold">Share Link</h3>
+                    <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed text-sm">
+                      Distribute your custom Venue URL on social channels. Attendees can join or express interest instantly.
+                    </p>
+                  </div>
+                </div>
               </div>
-              <h3 className="text-xl font-bold">Share link</h3>
-              <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed text-sm">
-                Distribute your custom Venue URL on social channels. Attendees can join or express interest instantly.
-              </p>
             </div>
- 
-            <div className="space-y-4">
-              <div className="mx-auto md:mx-0 size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-base">
-                3
+
+            {/* Step 3 */}
+            <div className="relative z-10 group">
+              <div className="rounded-2xl border border-zinc-200/80 bg-white/60 dark:border-zinc-800/80 dark:bg-zinc-900/40 backdrop-blur-sm p-8 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 hover:-translate-y-1 h-full">
+                <div className="flex flex-col items-center text-center space-y-5">
+                  <div className="relative">
+                    <div className="size-14 rounded-2xl bg-primary text-primary-foreground flex items-center justify-center font-extrabold text-xl shadow-lg shadow-primary/20">
+                      3
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <h3 className="text-lg font-bold">Automated Emails</h3>
+                    <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed text-sm">
+                      Inngest takes care of dispatching immediate confirmations and scheduled reminders 24h prior.
+                    </p>
+                  </div>
+                </div>
               </div>
-              <h3 className="text-xl font-bold">Automated Emails</h3>
-              <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed text-sm">
-                Inngest takes care of dispatching immediate confirmations and scheduled reminders 24h prior.
-              </p>
             </div>
           </div>
         </div>
+
  
- 
+
       </main>
  
       <footer className="w-full border-t border-zinc-200/50 dark:border-zinc-800/50 bg-white/10 dark:bg-zinc-950/10 backdrop-blur-sm py-12 px-6 transition-colors">
