@@ -24,8 +24,7 @@ export async function sendRegistrationEmail({
   organizerContact,
 }: SendRegistrationEmailParams) {
   try {
-    const transporter = getTransporter();
-    const info = await transporter.sendMail({
+    const info = await getTransporter().sendMail({
       from: `"Venue" <${process.env.SMTP_EMAIL}>`,
       to,
       subject: `You're registered for ${eventName}!`,
