@@ -1,7 +1,7 @@
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { db } from "@/src/db";
-import { eq, desc } from "drizzle-orm";
+import { eq, and, desc } from "drizzle-orm";
 import { eventsTable } from "@/src/db/schema";
 import { ApiResponse } from "@/lib/api-response";
 
@@ -76,7 +76,12 @@ export const DELETE = async (req: Request) => {
             return ApiResponse.error("Event ID is required", 400);
         }
 
-        await db.delete(eventsTable).where(eq(eventsTable.id, id));
+        await db.delete(eventsTable).where(
+            and(
+                eq(eventsTable.id, Number(id)),
+                eq(eventsTable.userId, session.user.id)
+            )
+        );
         return ApiResponse.success(null, "Event deleted successfully", 200);
     } catch (error: any) {
         console.error("Error deleting event:", error);
@@ -109,7 +114,12 @@ export const PATCH = async (req: Request) => {
             posterUrl: posterUrl,
             location,
             isPrivate: Boolean(isPrivate),
-        }).where(eq(eventsTable.id, id));
+        }).where(
+            and(
+                eq(eventsTable.id, Number(id)),
+                eq(eventsTable.userId, session.user.id)
+            )
+        );
 
         return ApiResponse.success(null, "Event updated successfully", 200);
     } catch (error: any) {
