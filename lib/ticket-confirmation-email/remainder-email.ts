@@ -19,7 +19,7 @@ export async function sendReminderEmail({
 }: SendReminderEmailParams) {
   try {
     const info = await getTransporter().sendMail({
-      from: `"Your App Name" <${process.env.SMTP_EMAIL}>`,
+      from: `"Venue" <${process.env.SMTP_EMAIL}>`,
       to,
       subject: `⏰ ${eventName} starts in 24 hours!`,
       html: `
