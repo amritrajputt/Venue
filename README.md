@@ -4,15 +4,14 @@
 
 ---
 
-## 🌟 Key Features
+## ⚙️ Backend Features & Architecture
 
-* **Event Discovery & Exploration:** Browse upcoming public community events, workshops, and meetups with live attendee counters, host information, and modal registration flows.
-* **Seamless RSVP & Registration:** Attendees can register for events instantly. Prevents double-registration and handles attendee capacity metrics.
-* **Automated Email Confirmations:** Dispatches instant ticket/registration confirmation emails to attendees with event details, rules, and entry guidelines using Nodemailer & background workflows.
-* **Organizer Dashboard:** Complete organizer suite to publish new events with ImageKit poster uploads, toggle public/private visibility, edit event details, and delete events.
-* **Live Analytics & Breakdown:** Performance metrics tracking total events hosted, total registrations, average attendance size, and detailed event-by-event breakdowns.
-* **Google Social Authentication:** Secure user authentication powered by Better Auth supporting Google OAuth login and session management.
-* **Responsive & Customizable Design System:** Crafted with Tailwind CSS v4, Base UI, dark/light mode toggle, canvas wave text animations, and glassmorphic cards tuned to a unified primary color palette.
+* **Relational Schema & Cascading Constraints:** Designed with Drizzle ORM on PostgreSQL (Neon DB). Features strict foreign key mapping so user deletions automatically trigger cascading erasures across events and attendee registrations.
+* **Event-Driven Background Workflows (Inngest):** Asynchronous event-driven job queue architecture handling background event triggers (`app/registration.confirmed`), retry logic, and 24-hour pre-event reminder scheduling.
+* **Transactional SMTP Email Pipeline:** Production-ready Nodemailer email dispatch system built with STARTTLS encryption. Renders structured HTML ticket confirmations containing registration IDs, event metadata, rules, and organizer contacts.
+* **Server-Side Session Authentication:** Secure authentication powered by Better Auth & Google OAuth. Implements server-side session resolution via Next.js headers validation and database-backed session adapters.
+* **Real-Time SQL Query Aggregations:** Server-side SQL data aggregation (`count()`, `groupBy()`, `leftJoin()`) for real-time RSVP counts, attendance velocity tracking, and organizer analytics dashboards without data drift.
+* **Optimized Media Delivery Pipeline:** Server-authenticated ImageKit API integration for secure file uploads and poster media distribution via global CDN.
 
 ---
 

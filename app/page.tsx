@@ -1,12 +1,12 @@
 "use client"
- 
+
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import Link from "next/link";
 import { CanvasText } from "@/components/ui/canvas-text";
-import { 
-  CheckCircle2, 
-  Search, 
-  Bell, 
+import {
+  CheckCircle2,
+  Search,
+  Bell,
   BarChart3
 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -30,7 +30,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 transition-colors duration-300">
-      
+
       <header className="sticky top-0 z-50 w-full bg-white/40 dark:bg-zinc-950/40 backdrop-blur-md transition-colors">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
           <Link href="/" className="flex items-center gap-2">
@@ -41,7 +41,7 @@ export default function Home() {
               Venue
             </span>
           </Link>
- 
+
           <nav>
             <ul className="flex items-center gap-6 text-sm font-medium text-zinc-600 dark:text-zinc-400 ">
               <li>
@@ -61,7 +61,7 @@ export default function Home() {
               </li>
             </ul>
           </nav>
- 
+
           <div className="flex items-center gap-4">
             <ModeToggle />
             {session ? (
@@ -82,16 +82,16 @@ export default function Home() {
           </div>
         </div>
       </header>
- 
+
       <main className="flex-1 relative overflow-hidden flex flex-col items-center pt-8 lg:pt-16 pb-24">
-        
+
         <div className="absolute inset-0 -z-10 overflow-hidden">
           <div className="absolute left-[5%] top-[10%] h-[500px] w-[500px] rounded-full bg-primary/10 blur-3xl dark:bg-primary/5" />
           <div className="absolute right-[5%] bottom-[10%] h-[500px] w-[500px] rounded-full bg-red-400/10 blur-3xl dark:bg-red-400/5" />
         </div>
- 
+
         <div className="mx-auto max-w-7xl w-full px-6 pt-4 pb-16 lg:pt-8 lg:pb-24 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          
+
           <div className="flex flex-col items-center lg:items-start text-center lg:text-left space-y-6 lg:space-y-8 max-w-2xl mx-auto lg:mx-0">
             <h1 className="text-4xl font-extrabold tracking-tight sm:text-6xl text-zinc-950 dark:text-zinc-50 leading-none">
               Discover & create amazing, <br />
@@ -116,12 +116,12 @@ export default function Home() {
                 />
               </span>
             </h1>
-            
+
             <p className="text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed">
-              Venue is a platform built for free and RSVP-based events. 
+              Venue is a platform built for free and RSVP-based events.
               Track attendees, analyze engagement, and automate communications in one place.
             </p>
-     
+
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4">
               <button onClick={() => handleCreateEvent()} className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm hover:bg-primary/90 hover:shadow-lg transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
                 Create an Event
@@ -131,7 +131,7 @@ export default function Home() {
               </Link>
             </div>
           </div>
- 
+
           <div className="relative w-full max-w-2xl mx-auto lg:max-w-none flex justify-center items-center lg:translate-x-6">
             <div className="absolute inset-0 -z-10 bg-primary/15 rounded-3xl blur-2xl transform scale-95" />
             <img
@@ -141,7 +141,7 @@ export default function Home() {
             />
           </div>
         </div>
- 
+
         <div id="features" className="mx-auto max-w-7xl w-full px-6 py-20 lg:py-28 space-y-12 border-t border-zinc-200/40 dark:border-zinc-800/40">
           <div className="text-center max-w-3xl mx-auto space-y-4">
             <span className="text-xs font-bold uppercase tracking-wider text-primary">Rich Ecosystem</span>
@@ -152,9 +152,9 @@ export default function Home() {
               Venue gives you simple and direct hosting options, so you can manage meetups without overhead fees or complicated tickets.
             </p>
           </div>
- 
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-           
+
             <div className="relative group overflow-hidden rounded-2xl border border-zinc-200/80 bg-white/50 p-8 hover:shadow-lg transition-all dark:border-zinc-800/80 dark:bg-zinc-900/30 backdrop-blur-sm">
               <div className="flex items-center gap-4">
                 <div className="p-3 rounded-xl bg-primary/10 text-primary">
@@ -166,7 +166,7 @@ export default function Home() {
                 Attendees can submit RSVPs (Going, Interested, or Not) instantly. Custom caps allow for smart occupancy limits, automatically shifting guests to waitlists.
               </p>
             </div>
- 
+
             <div className="relative group overflow-hidden rounded-2xl border border-zinc-200/80 bg-white/50 p-8 hover:shadow-lg transition-all dark:border-zinc-800/80 dark:bg-zinc-900/30 backdrop-blur-sm">
               <div className="flex items-center gap-4">
                 <div className="p-3 rounded-xl bg-primary/10 text-primary">
@@ -178,7 +178,7 @@ export default function Home() {
                 Allows attendees to browse events by tags, dates, and locations. Active filter states persist in the URL so that customized lists are fully shareable.
               </p>
             </div>
- 
+
             <div className="relative group overflow-hidden rounded-2xl border border-zinc-200/80 bg-white/50 p-8 hover:shadow-lg transition-all dark:border-zinc-800/80 dark:bg-zinc-900/30 backdrop-blur-sm">
               <div className="flex items-center gap-4">
                 <div className="p-3 rounded-xl bg-primary/10 text-primary">
@@ -190,7 +190,7 @@ export default function Home() {
                 Email confirmations are dispatched automatically on RSVP. Pre-event notifications are triggered exactly 24 hours prior to starting, powered by Inngest workflows.
               </p>
             </div>
- 
+
             <div className="relative group overflow-hidden rounded-2xl border border-zinc-200/80 bg-white/50 p-8 hover:shadow-lg transition-all dark:border-zinc-800/80 dark:bg-zinc-900/30 backdrop-blur-sm">
               <div className="flex items-center gap-4">
                 <div className="p-3 rounded-xl bg-primary/10 text-primary">
@@ -204,7 +204,7 @@ export default function Home() {
             </div>
           </div>
         </div>
- 
+
         <div id="steps" className="mx-auto max-w-7xl w-full px-6 py-20 lg:py-28 space-y-16 border-t border-zinc-200/50 dark:border-zinc-800/50">
           <div className="text-center max-w-3xl mx-auto space-y-4">
             <span className="text-xs font-bold uppercase tracking-wider text-primary">How It Works</span>
@@ -215,9 +215,9 @@ export default function Home() {
               From creation to confirmation — everything is streamlined for you.
             </p>
           </div>
- 
+
           <div className="relative grid grid-cols-1 md:grid-cols-3 gap-8">
-            
+
             {/* Connector line (desktop only) */}
             <div className="hidden md:block absolute top-14 left-[20%] right-[20%] h-[2px] bg-gradient-to-r from-primary/30 via-primary/60 to-primary/30 z-0" />
 
@@ -280,10 +280,10 @@ export default function Home() {
           </div>
         </div>
 
- 
+
 
       </main>
- 
+
       <footer className="w-full border-t border-zinc-200/50 dark:border-zinc-800/50 bg-white/10 dark:bg-zinc-950/10 backdrop-blur-sm py-12 px-6 transition-colors">
         <div className="mx-auto max-w-7xl grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4 md:col-span-1">
