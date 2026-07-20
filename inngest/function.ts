@@ -1,8 +1,12 @@
 import { inngest } from "./client";
-import { sendRegistrationEmail } from "../lib/ticket-confirmation-email/send-registration-email";
+import { sendRegistrationEmail } from "@/lib/ticket-confirmation-email/send-registration-email";
 
 export const registrationConfirmationEmail = inngest.createFunction(
-  { id: "registration-confirmation-mail", triggers: [{ event: "app/registration.confirmed" }] },
+  {
+    id: "registration-confirmation-mail",
+    name: "Registration Confirmation Email",
+    triggers: [{ event: "app/registration.confirmed" }],
+  },
   async ({ event, step }) => {
     return await step.run("send-registration-email", async () => {
       return await sendRegistrationEmail({

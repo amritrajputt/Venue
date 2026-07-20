@@ -1,4 +1,4 @@
-import { transporter } from "./client";
+import { getTransporter } from "./client";
 
 interface SendRegistrationEmailParams {
   to: string;
@@ -24,6 +24,7 @@ export async function sendRegistrationEmail({
   organizerContact,
 }: SendRegistrationEmailParams) {
   try {
+    const transporter = getTransporter();
     const info = await transporter.sendMail({
       from: `"Venue" <${process.env.SMTP_EMAIL}>`,
       to,
