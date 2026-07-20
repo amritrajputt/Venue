@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
@@ -12,7 +13,7 @@ export default async function DashboardLayout({
   modal,
 }: {
   children: React.ReactNode;
-  modal:React.ReactNode;
+  modal: React.ReactNode;
 }) {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -31,15 +32,17 @@ export default async function DashboardLayout({
   return (
     <SidebarProvider>
       <div className="flex min-h-screen w-full bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 transition-colors duration-300">
-        <DashboardSidebar
-          user={{
-            id: session.user.id,
-            name: session.user.name,
-            email: session.user.email,
-            image: session.user.image,
-          }}
-          plan={dbUser?.plan || "Free"}
-        />
+        <Suspense fallback={<div className="w-64 border-r border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900" />}>
+          <DashboardSidebar
+            user={{
+              id: session.user.id,
+              name: session.user.name,
+              email: session.user.email,
+              image: session.user.image,
+            }}
+            plan={dbUser?.plan || "Free"}
+          />
+        </Suspense>
         <main className="flex-1 overflow-y-auto">
           <div className="sticky top-0 z-40 flex h-14 items-center gap-4 border-b border-zinc-200/40 bg-white/40 px-6 backdrop-blur-md dark:border-zinc-800/40 dark:bg-zinc-950/40">
             <SidebarTrigger />
