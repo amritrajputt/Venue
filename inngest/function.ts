@@ -71,12 +71,16 @@ export const eventReminderEmail = inngest.createFunction(
       return { skipped: true, reason: "Event not found" };
     }
 
-    const reminderTime = new Date(currentEvent.startTime * 1000 - 24 * 60 * 60 * 1000);
+    const now = Date.now();
+    const eventStartTimeMs = currentEvent.startTime * 1000;
+    const reminderTime = new Date(eventStartTimeMs - 24 * 60 * 60 * 1000);
 
-    if (reminderTime.getTime() > Date.now()) {
+    if (eventStartTimeMs <= now) {
+      return { skipped: true, reason: "Event has already started or passed" };
+    }
+
+    if (reminderTime.getTime() > now) {
       await step.sleepUntil("wait-until-24hr-before-event", reminderTime);
-    } else {
-      return { skipped: true, reason: "Registered less than 24hrs before event" };
     }
 
     const latestEvent = await step.run("fetch-latest-event-data", async () => {
